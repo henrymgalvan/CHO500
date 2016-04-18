@@ -1,0 +1,191 @@
+﻿@model cho500.Entity.Person
+
+@{
+    ViewBag.Title = "Delete Patient Record";
+}
+
+<h3>Delete @Model.FullName</h3>
+
+<h3>Are you sure you want to delete @Model.FullName?</h3>
+<div>
+     <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MiddleName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MiddleName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateOfBirth)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Sex)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Sex)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Deceased)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Deceased)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BloodType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BloodType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FathersName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FathersName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MothersName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MothersName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Barangay)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Barangay)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ContactPerson)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ContactPerson)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RelationshipToContact)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RelationshipToContact)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhoneNoOfContact)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNoOfContact)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PatientContactNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PatientContactNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhilHealth)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhilHealth)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateCreated)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.DateLastUpdated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateLastUpdated)
+        </dd>*@
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Notes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Notes)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
