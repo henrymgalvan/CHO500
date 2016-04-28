@@ -1,6 +1,5 @@
 namespace cho500.Migrations
 {
-    using Entity;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -27,19 +26,6 @@ namespace cho500.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
-
-            //context.BloodTypes.AddOrUpdate(
-            //    B => B.Name,
-            //    new BloodTypes { Name = "O-" },
-            //    new BloodTypes { Name = "O+" },
-            //    new BloodTypes { Name = "A-" },
-            //    new BloodTypes { Name = "A+" },
-            //    new BloodTypes { Name = "B-" },
-            //    new BloodTypes { Name = "B+" },
-            //    new BloodTypes { Name = "AB-" },
-            //    new BloodTypes { Name = "AB+" }
-            //    );
-            //context.SaveChanges();
         }
     }
 }

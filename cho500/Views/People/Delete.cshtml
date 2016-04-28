@@ -1,14 +1,15 @@
 ﻿@model cho500.Entity.Person
 
 @{
-    ViewBag.Title = "Delete Patient Record";
+    ViewBag.Title = "Delete";
 }
 
-<h3>Delete @Model.FullName</h3>
+<h2>Delete</h2>
 
-<h3>Are you sure you want to delete @Model.FullName?</h3>
+<h3>Are you sure you want to delete this?</h3>
 <div>
-     <hr />
+    <h4>Person</h4>
+    <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.FirstName)
@@ -51,43 +52,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Status)
+            @Html.DisplayNameFor(model => model.CivilStatus)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Deceased)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Deceased)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.BloodType)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.BloodType)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FathersName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FathersName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.MothersName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.MothersName)
+            @Html.DisplayFor(model => model.CivilStatus)
         </dd>
 
         <dt>
@@ -107,51 +76,19 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Email)
+            @Html.DisplayNameFor(model => model.ContactNumber)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Email)
+            @Html.DisplayFor(model => model.ContactNumber)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ContactPerson)
+            @Html.DisplayNameFor(model => model.Encoder)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ContactPerson)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.RelationshipToContact)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.RelationshipToContact)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PhoneNoOfContact)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PhoneNoOfContact)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PatientContactNumber)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PatientContactNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PhilHealth)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PhilHealth)
+            @Html.DisplayFor(model => model.Encoder)
         </dd>
 
         <dt>
@@ -161,14 +98,6 @@
         <dd>
             @Html.DisplayFor(model => model.DateCreated)
         </dd>
-
-        @*<dt>
-            @Html.DisplayNameFor(model => model.DateLastUpdated)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DateLastUpdated)
-        </dd>*@
 
         <dt>
             @Html.DisplayNameFor(model => model.Notes)

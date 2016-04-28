@@ -3,20 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
-namespace cho500.Entity
-{
-    public class Person
+namespace cho500.Models
+{ 
+    public class CreatePersonViewModel
     {
-        public enum Gender
-        {
-            Male = 1, Female = 2
-        }
-        public enum State
-        {
-            Dependent=1, Single, Married, Separated, Annuled
-        }
-
+        [HiddenInput]
         public int ID { get; set; }
         [Required]
         [Display(Name = "First Name")]
@@ -32,31 +25,18 @@ namespace cho500.Entity
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DateOfBirth { get; set; }
-        public Gender Sex { get; set; }
-        public State CivilStatus { get; set; }
+        public Entity.Person.Gender Sex { get; set; }
+        public Entity.Person.State CivilStatus { get; set; }
         public string Address { get; set; }
         public string Barangay { get; set; }
-        public int HouseholdNo { get; set; }
-        //public int BarangayID { get; set; }
+        public int HouseHoldNo { get; set; }
         [Phone]
         public string ContactNumber { get; set; }
         public string Encoder { get; set; }
         public DateTime DateCreated { get; set; }
+        [DataType(DataType.MultilineText)]
         public string Notes { get; set; }
-        [Display(Name = "Full Name")]
-        public string FullName
-        {
-            get
-            {
-                return LastName + ", " + FirstName + " " + MiddleName;
-            }
-        }
 
-        public virtual ICollection<Consultation> Consultations { get; set; }
-
-
-
-
-
+        public CreateConsultViewModel createConsultViewModel;
     }
 }

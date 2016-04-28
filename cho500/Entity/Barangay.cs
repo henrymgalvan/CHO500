@@ -5,9 +5,9 @@ using System.Web;
 
 namespace cho500.Entity
 {
-    public class BloodTypes
+    public class Barangay
     {
-        public int Id { get; set; }
+        public int BarangayID { get; set; }
         public string Name { get; set; }
 
     }

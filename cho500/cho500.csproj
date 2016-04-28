@@ -44,6 +44,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -186,40 +190,36 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ConsultReportController.cs" />
+    <Compile Include="Controllers\ConsultsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\PeopleController.cs" />
-    <Compile Include="Controllers\StaffsController.cs" />
-    <Compile Include="Entity\BloodTypes.cs" />
-    <Compile Include="Entity\Diagnosis.cs" />
-    <Compile Include="Entity\LeprosyRecord.cs" />
+    <Compile Include="Controllers\PatientController.cs" />
+    <Compile Include="Entity\Barangay.cs" />
+    <Compile Include="Entity\Consultation.cs" />
+    <Compile Include="Entity\Physician.cs" />
+    <Compile Include="Entity\Temp\LeprosyRecord.cs" />
     <Compile Include="Entity\Person.cs" />
-    <Compile Include="Entity\RecommendedMedication.cs" />
-    <Compile Include="Entity\Services.cs" />
-    <Compile Include="Entity\Staff.cs" />
+    <Compile Include="Entity\Temp\RecommendedMedication.cs" />
+    <Compile Include="Entity\Temp\Services.cs" />
+    <Compile Include="Entity\Temp\Staff.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201604101631176_AddedPersonStaffEntity.cs" />
-    <Compile Include="Migrations\201604101631176_AddedPersonStaffEntity.Designer.cs">
-      <DependentUpon>201604101631176_AddedPersonStaffEntity.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201604111227329_fixedStaffToPerson.cs" />
-    <Compile Include="Migrations\201604111227329_fixedStaffToPerson.Designer.cs">
-      <DependentUpon>201604111227329_fixedStaffToPerson.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201604111329138_PersonStaffTable.cs" />
-    <Compile Include="Migrations\201604111329138_PersonStaffTable.Designer.cs">
-      <DependentUpon>201604111329138_PersonStaffTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201604151424022_BloodTypeTableAdded.cs" />
-    <Compile Include="Migrations\201604151424022_BloodTypeTableAdded.Designer.cs">
-      <DependentUpon>201604151424022_BloodTypeTableAdded.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CreateAnthroViewModel.cs" />
+    <Compile Include="Models\CreateConsultViewModel.cs" />
+    <Compile Include="Models\CreateDiagnosisViewModel.cs" />
+    <Compile Include="Models\DetailsConsultViewModel.cs" />
+    <Compile Include="Models\EditConsultViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\IndexConsultViewModel.cs" />
+    <Compile Include="Models\IndexPatientViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\CreatePersonViewModel.cs" />
+    <Compile Include="Models\CreateVitalSignViewModel.cs" />
+    <Compile Include="Models\ConsultReportListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -281,16 +281,27 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\People\Create.cshtml" />
-    <Content Include="Views\People\Delete.cshtml" />
-    <Content Include="Views\People\Details.cshtml" />
-    <Content Include="Views\People\Edit.cshtml" />
-    <Content Include="Views\People\Index.cshtml" />
     <Content Include="Views\Staffs\Create.cshtml" />
     <Content Include="Views\Staffs\Delete.cshtml" />
     <Content Include="Views\Staffs\Details.cshtml" />
     <Content Include="Views\Staffs\Edit.cshtml" />
     <Content Include="Views\Staffs\Index.cshtml" />
+    <Content Include="Views\Patient\Create.cshtml" />
+    <Content Include="Views\Patient\Delete.cshtml" />
+    <Content Include="Views\Patient\Details.cshtml" />
+    <Content Include="Views\Patient\Edit.cshtml" />
+    <Content Include="Views\Patient\Index.cshtml" />
+    <Content Include="Views\Consults\Create.cshtml" />
+    <Content Include="Views\Consults\Delete.cshtml" />
+    <Content Include="Views\Consults\Edit1.cshtml" />
+    <Content Include="Views\Consults\Index.cshtml" />
+    <Content Include="Views\Consults\Details.cshtml" />
+    <Content Include="Views\Consults\Edit.cshtml" />
+    <Content Include="Views\People\Create.cshtml" />
+    <Content Include="Views\People\Delete.cshtml" />
+    <Content Include="Views\People\Details.cshtml" />
+    <Content Include="Views\People\Edit.cshtml" />
+    <Content Include="Views\People\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -302,20 +313,6 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201604101631176_AddedPersonStaffEntity.resx">
-      <DependentUpon>201604101631176_AddedPersonStaffEntity.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604111227329_fixedStaffToPerson.resx">
-      <DependentUpon>201604111227329_fixedStaffToPerson.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604111329138_PersonStaffTable.resx">
-      <DependentUpon>201604111329138_PersonStaffTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604151424022_BloodTypeTableAdded.resx">
-      <DependentUpon>201604151424022_BloodTypeTableAdded.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

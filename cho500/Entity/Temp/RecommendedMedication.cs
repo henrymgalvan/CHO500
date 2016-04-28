@@ -16,6 +16,6 @@ namespace cho500.Entity
         public string Notes { get; set; }
 
         public int DiagnosisId { get; set; }
-        public virtual Diagnosis Diagnosis { get; set; }
+        //public virtual Diagnosis Diagnosis { get; set; }
     }
 }

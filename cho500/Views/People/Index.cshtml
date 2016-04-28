@@ -1,96 +1,99 @@
-﻿@*@model IEnumerable<cho500.Entity.Person>*@
-@model PagedList.IPagedList<cho500.Entity.Person>
-@using PagedList.Mvc;
-<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+﻿@model IEnumerable<cho500.Entity.Person>
 
 @{
-    ViewBag.Title = "List of Patients";
+    ViewBag.Title = "Index";
 }
 
-<h3>List of Patients</h3>
+<h2>Index</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-
-@using (Html.BeginForm("Index", "People", FormMethod.Get))
-{
-    <p>
-        Find by name or Barangay: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
-        <input type="submit" value="Search" />
-    </p>
-}
 <table class="table">
     <tr>
         <th>
-            @Html.ActionLink("Full Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+            @Html.DisplayNameFor(model => model.FirstName)
         </th>
         <th>
-            @*@Html.DisplayNameFor(model => model.DateOfBirth)*@
-            Date of Birth
+            @Html.DisplayNameFor(model => model.MiddleName)
         </th>
         <th>
-            @*@Html.DisplayNameFor(model => model.Sex)*@
-            Gender
+            @Html.DisplayNameFor(model => model.LastName)
         </th>
         <th>
-            @*@Html.DisplayNameFor(model => model.BloodType)*@
-            Blood type
+            @Html.DisplayNameFor(model => model.DateOfBirth)
         </th>
         <th>
-            @Html.ActionLink("Barangay", "Index", new { sortOrder = ViewBag.BarangaySortParm })
+            @Html.DisplayNameFor(model => model.Sex)
         </th>
         <th>
-            @*@Html.DisplayNameFor(model => model.Email)*@
-            Email
+            @Html.DisplayNameFor(model => model.CivilStatus)
         </th>
         <th>
-            @*@Html.DisplayNameFor(model => model.PhilHealth)*@
-            PhilHealth
+            @Html.DisplayNameFor(model => model.Address)
         </th>
-        @*<th></th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.Barangay)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContactNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Encoder)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Notes)
+        </th>
+        <th></th>
     </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.ActionLink(item.FullName, "Details", new { id = item.ID })
-                @*@Html.DisplayFor(modelItem => item.FullName)*@
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOfBirth)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sex)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BloodType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Barangay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhilHealth)
-            </td>
-            @*<td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-            </td>*@
-        </tr>
-    }
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MiddleName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateOfBirth)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sex)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CivilStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Barangay)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ContactNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Encoder)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateCreated)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Notes)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
 
 </table>
-<br />
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-@Html.PagedListPager(Model, page => Url.Action("Index",
-        new
-        {
-            page,
-            sortOrder = ViewBag.CurrentSort,
-            currentFilter = ViewBag.CurrentFilter
-        })) 
