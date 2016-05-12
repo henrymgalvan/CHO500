@@ -6,8 +6,8 @@ using System.Web;
 using System.Web.Mvc;
 
 namespace cho500.Models
-{ 
-    public class CreatePersonViewModel
+{
+    public class EditPersonViewModel
     {
         [HiddenInput]
         public int ID { get; set; }

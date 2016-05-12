@@ -14,10 +14,10 @@ namespace cho500.Entity
         }
         public enum State
         {
-            Dependent=1, Single, Married, Separated, Annuled
+            Dependent = 1, Single, Married, Separated, Annuled
         }
-
-        public int ID { get; set; }
+        [Key]
+        public int PersonID { get; set; }
         [Required]
         [Display(Name = "First Name")]
         [StringLength(50, MinimumLength = 1)]    //ErrorMessage = "First name cannot be longer than 50 characters."
@@ -31,13 +31,11 @@ namespace cho500.Entity
         public string LastName { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         public Gender Sex { get; set; }
         public State CivilStatus { get; set; }
         public string Address { get; set; }
-        public string Barangay { get; set; }
         public int HouseholdNo { get; set; }
-        //public int BarangayID { get; set; }
         [Phone]
         public string ContactNumber { get; set; }
         public string Encoder { get; set; }
@@ -54,9 +52,12 @@ namespace cho500.Entity
 
         public virtual ICollection<Consultation> Consultations { get; set; }
 
+        public int BarangayID { get; set; }
+        public virtual Barangay Barangay { get; set; }
 
 
-
+        //public int ChildHealthRecordId { get; set; }
+        public virtual ChildHealthRecord ChildHealthRecords { get; set; }
 
     }
 }

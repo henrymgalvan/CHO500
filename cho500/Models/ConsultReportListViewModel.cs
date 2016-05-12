@@ -16,7 +16,7 @@ namespace cho500.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime DateOfConsult { get; set; }
-        public decimal AverageBP { get; set; }
+        public string AverageBP { get; set; }
         public int RespiratoryRate { get; set; }
         public decimal Temperature { get; set; }
         public BMIStatus BMIStatus { get; set; }

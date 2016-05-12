@@ -190,35 +190,59 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BarangaysController.cs" />
+    <Compile Include="Controllers\CBFollowUpController.cs" />
+    <Compile Include="Controllers\ChildRecordController.cs" />
     <Compile Include="Controllers\ConsultReportController.cs" />
     <Compile Include="Controllers\ConsultsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PatientController.cs" />
+    <Compile Include="Controllers\PhysiciansController.cs" />
+    <Compile Include="Controllers\VaccinesController.cs" />
     <Compile Include="Entity\Barangay.cs" />
+    <Compile Include="Entity\ChildHealthRecord.cs" />
     <Compile Include="Entity\Consultation.cs" />
     <Compile Include="Entity\Physician.cs" />
+    <Compile Include="Entity\ChildBirthFollowUpVisit.cs" />
+    <Compile Include="Entity\Temp\ChildBirthHistory.cs" />
+    <Compile Include="Entity\ChildImmunizatonRecord.cs" />
     <Compile Include="Entity\Temp\LeprosyRecord.cs" />
     <Compile Include="Entity\Person.cs" />
     <Compile Include="Entity\Temp\RecommendedMedication.cs" />
     <Compile Include="Entity\Temp\Services.cs" />
     <Compile Include="Entity\Temp\Staff.cs" />
+    <Compile Include="Entity\Vaccine.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605110113212_Init.cs" />
+    <Compile Include="Migrations\201605110113212_Init.Designer.cs">
+      <DependentUpon>201605110113212_Init.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\CreateAnthroViewModel.cs" />
+    <Compile Include="Models\ChildRecords\ChildBirthFollowUpVisitCreateViewModel.cs" />
+    <Compile Include="Models\ChildRecords\ChildBirthFollowUpVisitIndexViewModel.cs" />
+    <Compile Include="Models\ChildRecords\ChildBirthFollowUpVisitViewModel.cs" />
+    <Compile Include="Models\ChildRecords\ChildBirthHistoryCreateViewModel.cs" />
+    <Compile Include="Models\ChildRecords\ChildBirthHistoryEditViewModel.cs" />
+    <Compile Include="Models\ChildRecords\ChildBirthHistoryIndexViewModel.cs" />
+    <Compile Include="Models\ChildRecords\ChildBirthHistoryRecordDetailsViewModel.cs" />
+    <Compile Include="Models\ChildRecords\ChildHealthRecordCreateViewModel.cs" />
+    <Compile Include="Models\ChildRecords\ChildImmunizationRecordViewModel.cs" />
+    <Compile Include="Models\temp\CreateAnthroViewModel.cs" />
     <Compile Include="Models\CreateConsultViewModel.cs" />
-    <Compile Include="Models\CreateDiagnosisViewModel.cs" />
+    <Compile Include="Models\temp\CreateDiagnosisViewModel.cs" />
     <Compile Include="Models\DetailsConsultViewModel.cs" />
     <Compile Include="Models\EditConsultViewModel.cs" />
+    <Compile Include="Models\EditPersonViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IndexConsultViewModel.cs" />
     <Compile Include="Models\IndexPatientViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\CreatePersonViewModel.cs" />
-    <Compile Include="Models\CreateVitalSignViewModel.cs" />
+    <Compile Include="Models\temp\CreateVitalSignViewModel.cs" />
     <Compile Include="Models\ConsultReportListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -281,11 +305,6 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Staffs\Create.cshtml" />
-    <Content Include="Views\Staffs\Delete.cshtml" />
-    <Content Include="Views\Staffs\Details.cshtml" />
-    <Content Include="Views\Staffs\Edit.cshtml" />
-    <Content Include="Views\Staffs\Index.cshtml" />
     <Content Include="Views\Patient\Create.cshtml" />
     <Content Include="Views\Patient\Delete.cshtml" />
     <Content Include="Views\Patient\Details.cshtml" />
@@ -297,11 +316,32 @@
     <Content Include="Views\Consults\Index.cshtml" />
     <Content Include="Views\Consults\Details.cshtml" />
     <Content Include="Views\Consults\Edit.cshtml" />
-    <Content Include="Views\People\Create.cshtml" />
-    <Content Include="Views\People\Delete.cshtml" />
-    <Content Include="Views\People\Details.cshtml" />
-    <Content Include="Views\People\Edit.cshtml" />
-    <Content Include="Views\People\Index.cshtml" />
+    <Content Include="Views\ConsultReport\Index.cshtml" />
+    <Content Include="Views\Barangays\Create.cshtml" />
+    <Content Include="Views\Barangays\Delete.cshtml" />
+    <Content Include="Views\Barangays\Details.cshtml" />
+    <Content Include="Views\Barangays\Edit.cshtml" />
+    <Content Include="Views\Barangays\Index.cshtml" />
+    <Content Include="Views\Vaccines\Create.cshtml" />
+    <Content Include="Views\Vaccines\Delete.cshtml" />
+    <Content Include="Views\Vaccines\Details.cshtml" />
+    <Content Include="Views\Vaccines\Edit.cshtml" />
+    <Content Include="Views\Vaccines\Index.cshtml" />
+    <Content Include="Views\Physicians\Create.cshtml" />
+    <Content Include="Views\Physicians\Delete.cshtml" />
+    <Content Include="Views\Physicians\Details.cshtml" />
+    <Content Include="Views\Physicians\Edit.cshtml" />
+    <Content Include="Views\Physicians\Index.cshtml" />
+    <Content Include="Views\ChildRecord\Delete.cshtml" />
+    <Content Include="Views\ChildRecord\Details.cshtml" />
+    <Content Include="Views\ChildRecord\Edit.cshtml" />
+    <Content Include="Views\ChildRecord\Index.cshtml" />
+    <Content Include="Views\ChildRecord\Create.cshtml" />
+    <Content Include="Views\CBFollowUp\Create.cshtml" />
+    <Content Include="Views\CBFollowUp\Delete.cshtml" />
+    <Content Include="Views\CBFollowUp\Details.cshtml" />
+    <Content Include="Views\CBFollowUp\Edit.cshtml" />
+    <Content Include="Views\CBFollowUp\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -313,6 +353,11 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201605110113212_Init.resx">
+      <DependentUpon>201605110113212_Init.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

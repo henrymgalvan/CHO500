@@ -1,5 +1,5 @@
-﻿namespace cho500.Models
-{
+﻿//namespace cho500.Models
+//{
     //public enum BMIStatus
     //{
     //    Obese=1, OverWeight, Normal, UnderWeight
@@ -14,4 +14,4 @@
     //    public BMIStatus BMIStatus { get; set; }
 
     //}
-}
+//}

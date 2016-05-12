@@ -34,7 +34,8 @@ namespace cho500.Controllers
                 searchString = currentFilter;
             }
             ViewBag.CurrentFilter = searchString;
-            var consultations = from cons in db.Consultations select cons;
+            //var consultations = from cons in db.Consultations select cons;
+            var consultations = db.Consultations.ToArray();
              List<IndexConsultViewModel> consults = new List<IndexConsultViewModel>();
             if (consultations.Any())
             {
@@ -42,8 +43,8 @@ namespace cho500.Controllers
                 {
                     consults.Add(new IndexConsultViewModel()
                     {
-                        Id = con.Id,
-                        PatientName = con.PatientName,
+                        Id = con.ConsultationID,
+                        PatientName = db.Patient.Find(con.PersonID).FullName,
                         AdmittedBy = con.AdmittedBy,
                         DateOfConsult = con.DateOfConsult,
                         ChiefComplaint = con.ChiefComplaint,
@@ -65,7 +66,6 @@ namespace cho500.Controllers
                         Recommendation=con.Recommendation,
                         Pharmacy=con.Pharmacy,
                         Physician=con.Physician
-
                     });
                 }
             }
@@ -106,13 +106,13 @@ namespace cho500.Controllers
                 return HttpNotFound();
             }
             var model = new DetailsConsultViewModel();
-            model.Id = consultation.Id;
-            model.PatientName = consultation.PatientName;
+            model.Id = consultation.ConsultationID;
+            model.PatientName = consultation.Person.FullName;
             model.ChiefComplaint = consultation.ChiefComplaint;
             model.Age = consultation.Age;
             model.AdmittedBy = consultation.AdmittedBy;
             model.DateOfConsult = consultation.DateOfConsult;
-            model.PreviousConsultDate = consultation.PreviousConsultDate;
+            model.PreviousConsultDate = consultation.PreviousConsultDate.HasValue ? consultation.PreviousConsultDate.Value.ToString("yyyy-mm-dd") : "NoDate";
             model.PreviousConsult = consultation.PreviousConsult;
             model.BPFirstReading = consultation.BPFirstReading;
             model.BPSecondReading = consultation.BPSecondReading;
@@ -139,7 +139,7 @@ namespace cho500.Controllers
         }
 
         // GET: Consults/Create
-        public ActionResult Create(int? PatientId, string PatientName)
+        public ActionResult Create(int? PatientId)
         {
             if (PatientId == null)
             {
@@ -148,7 +148,7 @@ namespace cho500.Controllers
             var model = new CreateConsultViewModel();
 
             model.PatientId = (int)PatientId;
-            model.PatientName = PatientName;
+            model.PatientName = db.Patient.Find(PatientId).FullName;
             model.DateOfConsult = DateTime.Now;
             model.PreviousConsultDate = DateTime.Now;
             return View(model);
@@ -163,10 +163,8 @@ namespace cho500.Controllers
         {
             if (ModelState.IsValid)
             {
-                Person patient = db.People.Single(d => d.ID == createConsultationViewModel.PatientId);
+                Person patient = db.Patient.Single(d => d.PersonID == createConsultationViewModel.PatientId);
                 var consult = new Consultation();
-                consult.PatientId = createConsultationViewModel.PatientId;
-                consult.PatientName = createConsultationViewModel.PatientName;
                 consult.AdmittedBy = createConsultationViewModel.AdmittedBy;
                 consult.DateOfConsult = createConsultationViewModel.DateOfConsult;
                 consult.PreviousConsultDate = createConsultationViewModel.PreviousConsultDate;
@@ -195,7 +193,7 @@ namespace cho500.Controllers
 
                 patient.Consultations.Add(consult);
                 db.SaveChanges();
-                //return RedirectToAction("Index");
+
                 return RedirectToAction("Details", "Patient", new { Id = createConsultationViewModel.PatientId });
             }
 
@@ -215,12 +213,12 @@ namespace cho500.Controllers
                 return HttpNotFound();
             }
             EditConsultViewModel editConsultViewModel = new EditConsultViewModel();
-            editConsultViewModel.Id = consultation.Id;
-            editConsultViewModel.PatientId = consultation.PatientId;
-            editConsultViewModel.PatientName = consultation.PatientName;
+            editConsultViewModel.Id = (int)consultation.ConsultationID;
+            //editConsultViewModel.PatientId = (int)consultation.;
+            editConsultViewModel.PatientName = consultation.Person.FullName;
             editConsultViewModel.AdmittedBy = consultation.AdmittedBy;
             editConsultViewModel.DateOfConsult = consultation.DateOfConsult;
-            editConsultViewModel.PreviousConsultDate = consultation.PreviousConsultDate;
+            editConsultViewModel.PreviousConsultDate = (DateTime)consultation.PreviousConsultDate;
             editConsultViewModel.ChiefComplaint = consultation.ChiefComplaint;
             editConsultViewModel.Age = consultation.Age;
             editConsultViewModel.BPFirstReading = consultation.BPFirstReading;
@@ -254,8 +252,8 @@ namespace cho500.Controllers
             if (ModelState.IsValid)
             {
                 Consultation consultation = await db.Consultations.FindAsync(editConsultViewModel.Id);
-                consultation.PatientId = editConsultViewModel.PatientId;
-                consultation.PatientName = editConsultViewModel.PatientName;
+                consultation.PersonID = editConsultViewModel.PatientId;
+
                 consultation.AdmittedBy = editConsultViewModel.AdmittedBy;
                 consultation.DateOfConsult = editConsultViewModel.DateOfConsult;
                 consultation.PreviousConsultDate = editConsultViewModel.PreviousConsultDate;

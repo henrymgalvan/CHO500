@@ -22,7 +22,7 @@ namespace cho500.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("cho502", throwIfV1Schema: false)
+            : base("cho503", throwIfV1Schema: false)
         {
         }
 
@@ -31,9 +31,15 @@ namespace cho500.Models
             return new ApplicationDbContext();
         }
 
-        public DbSet<Person> People { get; set; }
+        public DbSet<Person> Patient { get; set; }
 
         public DbSet<Consultation> Consultations { get; set; }
         public DbSet<Barangay> Barangays { get; set; }
+        public DbSet<Vaccine> Vaccines { get; set; }
+        public DbSet<Physician> Physicians { get; set; }
+
+        public DbSet<ChildHealthRecord> ChildHealthRecord { get; set; }
+        public DbSet<ChildBirthFollowUpVisit> ChildBirthFollowUpVisits { get; set; }
+
     }
 }
