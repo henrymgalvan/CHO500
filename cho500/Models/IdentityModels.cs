@@ -22,7 +22,7 @@ namespace cho500.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("cho503", throwIfV1Schema: false)
+            : base("cho505", throwIfV1Schema: false)
         {
         }
 
@@ -37,9 +37,15 @@ namespace cho500.Models
         public DbSet<Barangay> Barangays { get; set; }
         public DbSet<Vaccine> Vaccines { get; set; }
         public DbSet<Physician> Physicians { get; set; }
+        public DbSet<BloodType> BloodType { get; set; }
+
 
         public DbSet<ChildHealthRecord> ChildHealthRecord { get; set; }
         public DbSet<ChildBirthFollowUpVisit> ChildBirthFollowUpVisits { get; set; }
+        public DbSet<HouseHoldClassificationPerVisit> Classifications { get; set; }
+        public DbSet<HouseholdProfile> HouseholdProfiles { get; set; }
+        public DbSet<ChildImmunizationRecord> ChildImmunizationRecords { get; set; }
 
+        public System.Data.Entity.DbSet<cho500.Entity.HouseholdMember> HouseholdMembers { get; set; }
     }
 }

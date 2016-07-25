@@ -16,10 +16,12 @@ namespace cho500.Entity
         public DateTime? DateOfFollowup { get; set; }
         public decimal Weight { get; set; }
         public decimal Height { get; set; }
-        public string Physician { get; set; }
+  
         public string Diagnosis { get; set; }
         public string Notes { get; set; }
-
+    
+        public int PhysicianID { get; set; } 
+        public virtual Physician Physician{ get; set; }
         public int PersonID { get; set; }
         public virtual ChildHealthRecord ChildHealthRecord { get; set; }
     }

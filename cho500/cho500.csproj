@@ -53,6 +53,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ReportViewer.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
       <Private>True</Private>
@@ -186,27 +188,52 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\MappingConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="cho505DataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>cho505DataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BarangaysController.cs" />
     <Compile Include="Controllers\CBFollowUpController.cs" />
+    <Compile Include="Controllers\ChildImmunizationController.cs" />
     <Compile Include="Controllers\ChildRecordController.cs" />
     <Compile Include="Controllers\ConsultReportController.cs" />
     <Compile Include="Controllers\ConsultsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HouseholdMembersController.cs" />
+    <Content Include="cho505DataSet.xsc">
+      <DependentUpon>cho505DataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="cho505DataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>cho505DataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="cho505DataSet.xss">
+      <DependentUpon>cho505DataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="Controllers\HouseholdProfilesController - Copy.cs1" />
+    <Compile Include="Controllers\HouseholdProfilesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <None Include="Controllers\PatientController - Copy.cs1" />
     <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="Controllers\PhysiciansController.cs" />
     <Compile Include="Controllers\VaccinesController.cs" />
     <Compile Include="Entity\Barangay.cs" />
+    <Compile Include="Entity\BloodType.cs" />
     <Compile Include="Entity\ChildHealthRecord.cs" />
     <Compile Include="Entity\Consultation.cs" />
+    <Compile Include="Entity\HouseHoldClassificationPerVisit.cs" />
+    <Compile Include="Entity\HouseholdMember.cs" />
+    <Compile Include="Entity\HouseholdProfile.cs" />
     <Compile Include="Entity\Physician.cs" />
     <Compile Include="Entity\ChildBirthFollowUpVisit.cs" />
-    <Compile Include="Entity\Temp\ChildBirthHistory.cs" />
-    <Compile Include="Entity\ChildImmunizatonRecord.cs" />
+    <Compile Include="Entity\ChildImmunizationRecord.cs" />
     <Compile Include="Entity\Temp\LeprosyRecord.cs" />
     <Compile Include="Entity\Person.cs" />
     <Compile Include="Entity\Temp\RecommendedMedication.cs" />
@@ -216,11 +243,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201605110113212_Init.cs" />
-    <Compile Include="Migrations\201605110113212_Init.Designer.cs">
-      <DependentUpon>201605110113212_Init.cs</DependentUpon>
+    <Compile Include="Migrations\201605121516133_InitialCreate.cs" />
+    <Compile Include="Migrations\201605121516133_InitialCreate.Designer.cs">
+      <DependentUpon>201605121516133_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\ChildRecords\ChildBirthFollowUpVisitEditViewModel.cs" />
+    <Compile Include="Models\Configuration1.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ChildRecords\ChildBirthFollowUpVisitCreateViewModel.cs" />
     <Compile Include="Models\ChildRecords\ChildBirthFollowUpVisitIndexViewModel.cs" />
@@ -230,7 +259,10 @@
     <Compile Include="Models\ChildRecords\ChildBirthHistoryIndexViewModel.cs" />
     <Compile Include="Models\ChildRecords\ChildBirthHistoryRecordDetailsViewModel.cs" />
     <Compile Include="Models\ChildRecords\ChildHealthRecordCreateViewModel.cs" />
+    <Compile Include="Models\ChildRecords\ChildImmunizationRecordCreateViewModel.cs" />
+    <Compile Include="Models\ChildRecords\ChildImmunizationRecordEditViewModel.cs" />
     <Compile Include="Models\ChildRecords\ChildImmunizationRecordViewModel.cs" />
+    <Compile Include="Models\Households\HouseholdIndexViewModel.cs" />
     <Compile Include="Models\temp\CreateAnthroViewModel.cs" />
     <Compile Include="Models\CreateConsultViewModel.cs" />
     <Compile Include="Models\temp\CreateDiagnosisViewModel.cs" />
@@ -246,6 +278,11 @@
     <Compile Include="Models\ConsultReportListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Content Include="Views\BarangayHouseholds\Create.cshtml" />
+    <Content Include="Views\BarangayHouseholds\Delete.cshtml" />
+    <Content Include="Views\BarangayHouseholds\Details.cshtml" />
+    <Content Include="Views\BarangayHouseholds\Edit.cshtml" />
+    <Content Include="Views\BarangayHouseholds\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -342,6 +379,22 @@
     <Content Include="Views\CBFollowUp\Details.cshtml" />
     <Content Include="Views\CBFollowUp\Edit.cshtml" />
     <Content Include="Views\CBFollowUp\Index.cshtml" />
+    <Content Include="Views\ChildImmunization\Create.cshtml" />
+    <Content Include="Views\ChildImmunization\Delete.cshtml" />
+    <Content Include="Views\ChildImmunization\Details.cshtml" />
+    <Content Include="Views\ChildImmunization\Edit.cshtml" />
+    <Content Include="Views\ChildImmunization\Index.cshtml" />
+    <Content Include="Views\HouseholdProfiles\Create.cshtml" />
+    <Content Include="Views\HouseholdProfiles\Delete.cshtml" />
+    <Content Include="Views\HouseholdProfiles\Details.cshtml" />
+    <Content Include="Views\HouseholdProfiles\Edit.cshtml" />
+    <Content Include="Views\HouseholdProfiles\Index.cshtml" />
+    <Content Include="Views\Patient\Create - Copy.cshtml" />
+    <Content Include="Views\HouseholdMembers\Create.cshtml" />
+    <Content Include="Views\HouseholdMembers\Delete.cshtml" />
+    <Content Include="Views\HouseholdMembers\Details.cshtml" />
+    <Content Include="Views\HouseholdMembers\Edit.cshtml" />
+    <Content Include="Views\HouseholdMembers\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -355,9 +408,10 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201605110113212_Init.resx">
-      <DependentUpon>201605110113212_Init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201605121516133_InitialCreate.resx">
+      <DependentUpon>201605121516133_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\HouseholdProfile.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -11,7 +11,7 @@ namespace cho500.Models
     {
         public int Id { get; set; }
         public string FullName { get; set; }
-        public int HouseHoldNo { get; set; }
+        public string HouseHoldNo { get; set; }
         public string Barangay { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]

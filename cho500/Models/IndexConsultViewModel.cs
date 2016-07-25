@@ -10,7 +10,7 @@ namespace cho500.Models
     public class IndexConsultViewModel
     {
         public int Id { get; set; }
-        //public int PatientId { get; set; }
+        public int PatientId { get; set; }
         public string PatientName { get; set; }
         public string AdmittedBy { get; set; }
         [DataType(DataType.Date)]

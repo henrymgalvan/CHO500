@@ -1,16 +1,17 @@
-﻿using System;
+﻿using cho500.Entity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace cho500.Entity
+namespace cho500.Models.ChildRecords
 {
-    public class ChildImmunizatonRecord
+    public class ChildImmunizationRecordEditViewModel
     {
         [Key]
         public int Id { get; set; }
-        public int VaccineID { get; set; }
+
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? First { get; set; }
@@ -34,5 +35,7 @@ namespace cho500.Entity
         public int PersonID { get; set; }
         public virtual ChildHealthRecord ChildHealthRecord { get; set; }
 
+        public int VaccineID { get; set; }
+        public virtual Vaccine Vaccine { get; set; }
     }
 }

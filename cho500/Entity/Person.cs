@@ -16,6 +16,7 @@ namespace cho500.Entity
         {
             Dependent = 1, Single, Married, Separated, Annuled
         }
+
         [Key]
         public int PersonID { get; set; }
         [Required]
@@ -34,12 +35,12 @@ namespace cho500.Entity
         public DateTime? DateOfBirth { get; set; }
         public Gender Sex { get; set; }
         public State CivilStatus { get; set; }
-        public string Address { get; set; }
-        public int HouseholdNo { get; set; }
+        public string HouseholdProfileID { get; set; }
+        public string PhilHealthNo { get; set; }   //new
         [Phone]
         public string ContactNumber { get; set; }
         public string Encoder { get; set; }
-        public DateTime DateCreated { get; set; }
+        public DateTime? DateCreated { get; set; }
         public string Notes { get; set; }
         [Display(Name = "Full Name")]
         public string FullName
@@ -52,12 +53,10 @@ namespace cho500.Entity
 
         public virtual ICollection<Consultation> Consultations { get; set; }
 
-        public int BarangayID { get; set; }
-        public virtual Barangay Barangay { get; set; }
+        public int? BloodTypeID { get; set; }
+        public virtual BloodType BloodType { get; set; }
 
-
-        //public int ChildHealthRecordId { get; set; }
         public virtual ChildHealthRecord ChildHealthRecords { get; set; }
-
+        //public virtual HouseholdProfile HouseholdProfile { get; set; }
     }
 }

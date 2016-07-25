@@ -42,6 +42,34 @@ namespace cho500.Migrations
                     new Physician { Name = "Doris Jovellanos, M.D." },
                     new Physician { Name = "Anne Lourdes Paragas, M.D." }
                 );
+
+            context.Classifications.AddOrUpdate(
+                c => c.Classification,
+                    new HouseHoldClassificationPerVisit { Classification = "N", Note = "Newborn 0-28 days" },
+                    new HouseHoldClassificationPerVisit { Classification = "I", Note = "Infant 1-11 months" },
+                    new HouseHoldClassificationPerVisit { Classification = "C", Note = "Child 12-59 months" },
+                    new HouseHoldClassificationPerVisit { Classification =  "P", Note = "Pregnant" },
+                    new HouseHoldClassificationPerVisit { Classification = "PP", Note = "Postpartum Up to 42 days after delivery" },
+                    new HouseHoldClassificationPerVisit { Classification = "TBS", Note = "TB Suspect; Cough > 2 weeks" },
+                    new HouseHoldClassificationPerVisit { Classification = "Ad", Note = "Adolescent(10-19 years" },
+                    new HouseHoldClassificationPerVisit { Classification = "NPNP", Note = "Not pregnant and not postpartum WRA(15-49 years" },
+                    new HouseHoldClassificationPerVisit { Classification = "D", Note = "Deceased" },
+                    new HouseHoldClassificationPerVisit { Classification = "TO", Note = "Transfered Out" },
+                    new HouseHoldClassificationPerVisit { Classification = "ON", Note = "Other Needs" }
+                );
+
+            context.BloodType.AddOrUpdate(
+                b => b.Type,
+                    new BloodType { Type = "O-" },
+                    new BloodType { Type = "O+" },
+                    new BloodType { Type = "A-" },
+                    new BloodType { Type = "A+" },
+                    new BloodType { Type = "B-" },
+                    new BloodType { Type = "B+" },
+                    new BloodType { Type = "AB-" },
+                    new BloodType { Type = "AB+" }
+                );
+
             context.Barangays.AddOrUpdate(
                     b => b.Name,
                         new Barangay { Name = "Bacayao Norte" },

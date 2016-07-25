@@ -60,22 +60,6 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.BarangayID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.BarangayID)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.ContactNumber)
         </dt>
 
@@ -84,11 +68,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Encoder)
+            @Html.DisplayNameFor(model => model.HouseholdProfileID)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Encoder)
+            @Html.DisplayFor(model => model.HouseholdProfileID)
         </dd>
 
         <dt>
@@ -111,7 +95,6 @@
 
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
-
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
             @Html.ActionLink("Back to List", "Index")

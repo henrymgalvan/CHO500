@@ -3,7 +3,7 @@ namespace cho500.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Init : DbMigration
+    public partial class InitialCreate : DbMigration
     {
         public override void Up()
         {
@@ -17,35 +17,31 @@ namespace cho500.Migrations
                 .PrimaryKey(t => t.BarangayID);
             
             CreateTable(
-                "dbo.ChildBirthFollowUpVisitIndexViewModels",
+                "dbo.BloodTypes",
+                c => new
+                    {
+                        BloodTypeID = c.Int(nullable: false, identity: true),
+                        Type = c.String(),
+                    })
+                .PrimaryKey(t => t.BloodTypeID);
+            
+            CreateTable(
+                "dbo.ChildBirthFollowUpVisits",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Age = c.Int(nullable: false),
-                        DateOfFollowup = c.DateTime(nullable: false),
+                        AgeInWeeks = c.Int(nullable: false),
+                        DateOfFollowup = c.DateTime(),
                         Weight = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Height = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        Physician = c.String(),
                         Diagnosis = c.String(),
                         Notes = c.String(),
                         PersonID = c.Int(nullable: false),
-                        Physician_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Staffs", t => t.Physician_Id)
-                .Index(t => t.Physician_Id);
-            
-            CreateTable(
-                "dbo.Staffs",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        FullName = c.String(),
-                        Position = c.Int(nullable: false),
-                        Title = c.String(),
-                        DateHired = c.DateTime(nullable: false),
-                        DateTerminated = c.DateTime(),
-                    })
-                .PrimaryKey(t => t.Id);
+                .ForeignKey("dbo.ChildHealthRecords", t => t.PersonID, cascadeDelete: true)
+                .Index(t => t.PersonID);
             
             CreateTable(
                 "dbo.ChildHealthRecords",
@@ -61,50 +57,44 @@ namespace cho500.Migrations
                         HeadCircumference = c.Decimal(nullable: false, precision: 18, scale: 2),
                         ChestCircumference = c.Decimal(nullable: false, precision: 18, scale: 2),
                         AbdominalCircumference = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        BloodType = c.String(),
+                        BloodTypeID = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.PersonID)
+                .ForeignKey("dbo.BloodTypes", t => t.BloodTypeID, cascadeDelete: true)
                 .ForeignKey("dbo.People", t => t.PersonID)
-                .Index(t => t.PersonID);
-            
-            CreateTable(
-                "dbo.ChildBirthFollowUpVisits",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Age = c.Int(nullable: false),
-                        DateOfFollowup = c.DateTime(nullable: false),
-                        Weight = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        Height = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        Diagnosis = c.String(),
-                        Notes = c.String(),
-                        PersonID = c.Int(nullable: false),
-                        Physician_Id = c.Int(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.ChildHealthRecords", t => t.PersonID, cascadeDelete: true)
-                .ForeignKey("dbo.Staffs", t => t.Physician_Id)
                 .Index(t => t.PersonID)
-                .Index(t => t.Physician_Id);
+                .Index(t => t.BloodTypeID);
             
             CreateTable(
-                "dbo.ChildImmunizatonRecords",
+                "dbo.ChildImmunizationRecords",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        VaccineID = c.Int(nullable: false),
-                        First = c.DateTime(nullable: false),
-                        Second = c.DateTime(nullable: false),
-                        Third = c.DateTime(nullable: false),
-                        Booster1 = c.DateTime(nullable: false),
-                        Booster2 = c.DateTime(nullable: false),
-                        Booster3 = c.DateTime(nullable: false),
+                        First = c.DateTime(),
+                        Second = c.DateTime(),
+                        Third = c.DateTime(),
+                        Booster1 = c.DateTime(),
+                        Booster2 = c.DateTime(),
+                        Booster3 = c.DateTime(),
                         Reaction = c.String(),
                         PersonID = c.Int(nullable: false),
+                        VaccineID = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.ChildHealthRecords", t => t.PersonID, cascadeDelete: true)
-                .Index(t => t.PersonID);
+                .ForeignKey("dbo.Vaccines", t => t.VaccineID, cascadeDelete: true)
+                .Index(t => t.PersonID)
+                .Index(t => t.VaccineID);
+            
+            CreateTable(
+                "dbo.Vaccines",
+                c => new
+                    {
+                        VaccineID = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                        Notes = c.String(),
+                    })
+                .PrimaryKey(t => t.VaccineID);
             
             CreateTable(
                 "dbo.People",
@@ -114,14 +104,14 @@ namespace cho500.Migrations
                         FirstName = c.String(nullable: false, maxLength: 50),
                         MiddleName = c.String(maxLength: 50),
                         LastName = c.String(nullable: false, maxLength: 50),
-                        DateOfBirth = c.DateTime(nullable: false),
+                        DateOfBirth = c.DateTime(),
                         Sex = c.Int(nullable: false),
                         CivilStatus = c.Int(nullable: false),
                         Address = c.String(),
                         HouseholdNo = c.Int(nullable: false),
                         ContactNumber = c.String(),
                         Encoder = c.String(),
-                        DateCreated = c.DateTime(nullable: false),
+                        DateCreated = c.DateTime(),
                         Notes = c.String(),
                         BarangayID = c.Int(nullable: false),
                     })
@@ -136,7 +126,7 @@ namespace cho500.Migrations
                         ConsultationID = c.Int(nullable: false, identity: true),
                         AdmittedBy = c.String(),
                         DateOfConsult = c.DateTime(nullable: false),
-                        PreviousConsultDate = c.DateTime(nullable: false),
+                        PreviousConsultDate = c.DateTime(),
                         PreviousConsult = c.Int(nullable: false),
                         ChiefComplaint = c.String(),
                         Age = c.Int(nullable: false),
@@ -243,16 +233,6 @@ namespace cho500.Migrations
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId);
             
-            CreateTable(
-                "dbo.Vaccines",
-                c => new
-                    {
-                        VaccineID = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                        Notes = c.String(),
-                    })
-                .PrimaryKey(t => t.VaccineID);
-            
         }
         
         public override void Down()
@@ -264,10 +244,10 @@ namespace cho500.Migrations
             DropForeignKey("dbo.ChildHealthRecords", "PersonID", "dbo.People");
             DropForeignKey("dbo.Consultations", "PersonID", "dbo.People");
             DropForeignKey("dbo.People", "BarangayID", "dbo.Barangays");
-            DropForeignKey("dbo.ChildImmunizatonRecords", "PersonID", "dbo.ChildHealthRecords");
-            DropForeignKey("dbo.ChildBirthFollowUpVisits", "Physician_Id", "dbo.Staffs");
+            DropForeignKey("dbo.ChildImmunizationRecords", "VaccineID", "dbo.Vaccines");
+            DropForeignKey("dbo.ChildImmunizationRecords", "PersonID", "dbo.ChildHealthRecords");
             DropForeignKey("dbo.ChildBirthFollowUpVisits", "PersonID", "dbo.ChildHealthRecords");
-            DropForeignKey("dbo.ChildBirthFollowUpVisitIndexViewModels", "Physician_Id", "dbo.Staffs");
+            DropForeignKey("dbo.ChildHealthRecords", "BloodTypeID", "dbo.BloodTypes");
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
@@ -276,12 +256,11 @@ namespace cho500.Migrations
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.Consultations", new[] { "PersonID" });
             DropIndex("dbo.People", new[] { "BarangayID" });
-            DropIndex("dbo.ChildImmunizatonRecords", new[] { "PersonID" });
-            DropIndex("dbo.ChildBirthFollowUpVisits", new[] { "Physician_Id" });
-            DropIndex("dbo.ChildBirthFollowUpVisits", new[] { "PersonID" });
+            DropIndex("dbo.ChildImmunizationRecords", new[] { "VaccineID" });
+            DropIndex("dbo.ChildImmunizationRecords", new[] { "PersonID" });
+            DropIndex("dbo.ChildHealthRecords", new[] { "BloodTypeID" });
             DropIndex("dbo.ChildHealthRecords", new[] { "PersonID" });
-            DropIndex("dbo.ChildBirthFollowUpVisitIndexViewModels", new[] { "Physician_Id" });
-            DropTable("dbo.Vaccines");
+            DropIndex("dbo.ChildBirthFollowUpVisits", new[] { "PersonID" });
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
@@ -290,11 +269,11 @@ namespace cho500.Migrations
             DropTable("dbo.Physicians");
             DropTable("dbo.Consultations");
             DropTable("dbo.People");
-            DropTable("dbo.ChildImmunizatonRecords");
-            DropTable("dbo.ChildBirthFollowUpVisits");
+            DropTable("dbo.Vaccines");
+            DropTable("dbo.ChildImmunizationRecords");
             DropTable("dbo.ChildHealthRecords");
-            DropTable("dbo.Staffs");
-            DropTable("dbo.ChildBirthFollowUpVisitIndexViewModels");
+            DropTable("dbo.ChildBirthFollowUpVisits");
+            DropTable("dbo.BloodTypes");
             DropTable("dbo.Barangays");
         }
     }

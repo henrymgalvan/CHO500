@@ -23,6 +23,6 @@ namespace cho500.Models.ChildRecords
         public decimal HeadCircumference { get; set; }
         public decimal ChestCircumference { get; set; }
         public decimal AbdominalCircumference { get; set; }
-        public string BloodType { get; set; }
+        //public int BloodTypeID { get; set; }
     }
 }

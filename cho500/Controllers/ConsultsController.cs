@@ -36,7 +36,7 @@ namespace cho500.Controllers
             ViewBag.CurrentFilter = searchString;
             //var consultations = from cons in db.Consultations select cons;
             var consultations = db.Consultations.ToArray();
-             List<IndexConsultViewModel> consults = new List<IndexConsultViewModel>();
+            List<IndexConsultViewModel> consults = new List<IndexConsultViewModel>();
             if (consultations.Any())
             {
                 foreach (var con in consultations)
@@ -44,34 +44,35 @@ namespace cho500.Controllers
                     consults.Add(new IndexConsultViewModel()
                     {
                         Id = con.ConsultationID,
+                        PatientId = con.PersonID,
                         PatientName = db.Patient.Find(con.PersonID).FullName,
                         AdmittedBy = con.AdmittedBy,
                         DateOfConsult = con.DateOfConsult,
                         ChiefComplaint = con.ChiefComplaint,
-                        Age=con.Age,
-                        BPAverage=con.BPAverage,
-                        PulseRate=con.PulseRate,
-                        RR=con.RR,
-                        Temperature=con.Temperature,
-                        WeightInKgms=con.WeightInKgms,
-                        HeightInCm=con.HeightInCm,
-                        WaistCircumferenceInCm=con.WaistCircumferenceInCm,
-                        CentralAdiposity=con.CentralAdiposity,
-                        BMI=con.BMI,
-                        BMIStatus=con.BMIStatus,
-                        History=con.History,
-                        PhysicalExam=con.PhysicalExam,
-                        DiagnosisLabResult=con.DiagnosisLabResult,
-                        ManagementTreatment=con.ManagementTreatment,
-                        Recommendation=con.Recommendation,
-                        Pharmacy=con.Pharmacy,
-                        Physician=con.Physician
+                        Age = con.Age,
+                        BPAverage = con.BPAverage,
+                        PulseRate = con.PulseRate,
+                        RR = con.RR,
+                        Temperature = con.Temperature,
+                        WeightInKgms = con.WeightInKgms,
+                        HeightInCm = con.HeightInCm,
+                        WaistCircumferenceInCm = con.WaistCircumferenceInCm,
+                        CentralAdiposity = con.CentralAdiposity,
+                        BMI = con.BMI,
+                        BMIStatus = con.BMIStatus,
+                        History = con.History,
+                        PhysicalExam = con.PhysicalExam,
+                        DiagnosisLabResult = con.DiagnosisLabResult,
+                        ManagementTreatment = con.ManagementTreatment,
+                        Recommendation = con.Recommendation,
+                        Pharmacy = con.Pharmacy,
+                        Physician = db.Physicians.Find(con.PhysicianID).Name
                     });
                 }
             }
             if (!string.IsNullOrEmpty(searchString))
             {
-                consults = consults.Where(p =>p.PatientName.ToUpper().Contains(searchString.ToUpper()) || p.Physician.ToUpper().Contains(searchString.ToUpper())).ToList();
+                consults = consults.Where(p => p.PatientName.ToUpper().Contains(searchString.ToUpper()) || p.Physician.ToUpper().Contains(searchString.ToUpper())).ToList();
             }
             switch (sortOrder)
             {
@@ -107,6 +108,7 @@ namespace cho500.Controllers
             }
             var model = new DetailsConsultViewModel();
             model.Id = consultation.ConsultationID;
+            model.PatientId = consultation.PersonID;
             model.PatientName = consultation.Person.FullName;
             model.ChiefComplaint = consultation.ChiefComplaint;
             model.Age = consultation.Age;
@@ -133,7 +135,7 @@ namespace cho500.Controllers
             model.ManagementTreatment = consultation.ManagementTreatment;
             model.Recommendation = consultation.Recommendation;
             model.Pharmacy = consultation.Pharmacy;
-            model.Physician = consultation.Physician;
+            model.Physician = db.Physicians.Find(consultation.PhysicianID).Name;
 
             return View(model);
         }
@@ -151,6 +153,7 @@ namespace cho500.Controllers
             model.PatientName = db.Patient.Find(PatientId).FullName;
             model.DateOfConsult = DateTime.Now;
             model.PreviousConsultDate = DateTime.Now;
+            PopulatePhysicianDropDownList();
             return View(model);
         }
 
@@ -159,7 +162,7 @@ namespace cho500.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PatientId,PatientName,AdmittedBy,DateOfConsult,PreviousConsultDate,PreviousConsult,ChiefComplaint,Age,BPFirstReading,BPSecondReading,BPAverage,RaisedBP,PulseRate,RR,Temperature,WeightInKgms,HeightInCm,WaistCircumferenceInCm,CentralAdiposity,BMI,BMIStatus,History,PhysicalExam,DiagnosisLabResult,ManagementTreatment,Recommendation,Pharmacy,Physician")] CreateConsultViewModel createConsultationViewModel)
+        public ActionResult Create([Bind(Include = "PatientId,PatientName,AdmittedBy,DateOfConsult,PreviousConsultDate,PreviousConsult,ChiefComplaint,Age,BPFirstReading,BPSecondReading,BPAverage,RaisedBP,PulseRate,RR,Temperature,WeightInKgms,HeightInCm,WaistCircumferenceInCm,CentralAdiposity,History,PhysicalExam,DiagnosisLabResult,ManagementTreatment,Recommendation,Pharmacy,PhysicianID")] CreateConsultViewModel createConsultationViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -168,7 +171,7 @@ namespace cho500.Controllers
                 consult.AdmittedBy = createConsultationViewModel.AdmittedBy;
                 consult.DateOfConsult = createConsultationViewModel.DateOfConsult;
                 consult.PreviousConsultDate = createConsultationViewModel.PreviousConsultDate;
-                consult.PreviousConsult = (Entity.PlaceOfPreviousConsult) createConsultationViewModel.PreviousConsult;
+                consult.PreviousConsult = (Entity.PlaceOfPreviousConsult)createConsultationViewModel.PreviousConsult;
                 consult.ChiefComplaint = createConsultationViewModel.ChiefComplaint;
                 consult.Age = createConsultationViewModel.Age;
                 consult.BPFirstReading = createConsultationViewModel.BPFirstReading;
@@ -181,15 +184,23 @@ namespace cho500.Controllers
                 consult.HeightInCm = createConsultationViewModel.HeightInCm;
                 consult.WaistCircumferenceInCm = createConsultationViewModel.WaistCircumferenceInCm;
                 consult.CentralAdiposity = createConsultationViewModel.CentralAdiposity;
-                consult.BMI = createConsultationViewModel.BMI;
-                consult.BMIStatus = (Entity.BMIStatus)createConsultationViewModel.BMIStatus;
+                if ((createConsultationViewModel.WeightInKgms > 0) | (createConsultationViewModel.HeightInCm > 0))
+                {
+                    var heightsquare = (createConsultationViewModel.HeightInCm / 100) * (createConsultationViewModel.HeightInCm / 100);
+                    var bmi = createConsultationViewModel.WeightInKgms / heightsquare;
+                    consult.BMI = bmi;
+                    if (bmi <= (18.5m)) { consult.BMIStatus = BMIStatus.Underweight; }
+                    else if (bmi <= (25)) { consult.BMIStatus = BMIStatus.Normal; }
+                    else if (bmi <= 30) { consult.BMIStatus = BMIStatus.Overweight; }
+                    else { consult.BMIStatus = BMIStatus.Obese; }
+                }
                 consult.History = createConsultationViewModel.History;
                 consult.PhysicalExam = createConsultationViewModel.PhysicalExam;
                 consult.DiagnosisLabResult = createConsultationViewModel.DiagnosisLabResult;
                 consult.ManagementTreatment = createConsultationViewModel.ManagementTreatment;
                 consult.Recommendation = createConsultationViewModel.Recommendation;
                 consult.Pharmacy = createConsultationViewModel.Pharmacy;
-                consult.Physician = createConsultationViewModel.Physician;
+                consult.PhysicianID = createConsultationViewModel.PhysicianID;
 
                 patient.Consultations.Add(consult);
                 db.SaveChanges();
@@ -214,11 +225,12 @@ namespace cho500.Controllers
             }
             EditConsultViewModel editConsultViewModel = new EditConsultViewModel();
             editConsultViewModel.Id = (int)consultation.ConsultationID;
-            //editConsultViewModel.PatientId = (int)consultation.;
+            editConsultViewModel.PatientId = (int)consultation.PersonID;
             editConsultViewModel.PatientName = consultation.Person.FullName;
             editConsultViewModel.AdmittedBy = consultation.AdmittedBy;
             editConsultViewModel.DateOfConsult = consultation.DateOfConsult;
             editConsultViewModel.PreviousConsultDate = (DateTime)consultation.PreviousConsultDate;
+            editConsultViewModel.PreviousConsult = consultation.PreviousConsult;
             editConsultViewModel.ChiefComplaint = consultation.ChiefComplaint;
             editConsultViewModel.Age = consultation.Age;
             editConsultViewModel.BPFirstReading = consultation.BPFirstReading;
@@ -236,9 +248,9 @@ namespace cho500.Controllers
             editConsultViewModel.BMIStatus = consultation.BMIStatus;
             editConsultViewModel.History = consultation.History;
             editConsultViewModel.Pharmacy = consultation.Pharmacy;
-            editConsultViewModel.Physician = consultation.Physician;
+            editConsultViewModel.PhysicianID = consultation.PhysicianID;
 
-
+            PopulatePhysicianDropDownList(consultation.PhysicianID);
             return View(editConsultViewModel);
         }
 
@@ -247,7 +259,7 @@ namespace cho500.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,PatientId,PatientName,AdmittedBy,DateOfConsult,PreviousConsultDate,PreviousConsult,ChiefComplaint,Age,BPFirstReading,BPSecondReading,BPAverage,RaisedBP,PulseRate,RR,Temperature,WeightInKgms,HeightInCm,WaistCircumferenceInCm,CentralAdiposity,BMI,BMIStatus,History,PhysicalExam,ManagementTreatment,Recommendation,Pharmacy,Physician")] EditConsultViewModel editConsultViewModel)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,PatientId,PatientName,AdmittedBy,DateOfConsult,PreviousConsultDate,PreviousConsult,ChiefComplaint,Age,BPFirstReading,BPSecondReading,BPAverage,RaisedBP,PulseRate,RR,Temperature,WeightInKgms,HeightInCm,WaistCircumferenceInCm,CentralAdiposity,BMI,BMIStatus,History,PhysicalExam,ManagementTreatment,Recommendation,Pharmacy,PhysicianID")] EditConsultViewModel editConsultViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -271,20 +283,31 @@ namespace cho500.Controllers
                 consultation.HeightInCm = editConsultViewModel.HeightInCm;
                 consultation.WaistCircumferenceInCm = editConsultViewModel.WaistCircumferenceInCm;
                 consultation.CentralAdiposity = editConsultViewModel.CentralAdiposity;
-                consultation.BMI = editConsultViewModel.BMI;
-                consultation.BMIStatus = editConsultViewModel.BMIStatus;
+
+                if ((editConsultViewModel.WeightInKgms > 0) | (editConsultViewModel.HeightInCm > 0))
+                {
+                    var heightsquare = (editConsultViewModel.HeightInCm / 100) * (editConsultViewModel.HeightInCm / 100);
+                    var bmi = editConsultViewModel.WeightInKgms / heightsquare;
+                    consultation.BMI = bmi;
+                    if (bmi <= (18.5m)) { consultation.BMIStatus = BMIStatus.Underweight; }
+                    else if (bmi <= (25)) { consultation.BMIStatus = BMIStatus.Normal; }
+                    else if (bmi <= 30) { consultation.BMIStatus = BMIStatus.Overweight; }
+                    else { consultation.BMIStatus = BMIStatus.Obese; }
+                }
                 consultation.History = editConsultViewModel.History;
                 consultation.PhysicalExam = editConsultViewModel.PhysicalExam;
                 consultation.DiagnosisLabResult = editConsultViewModel.DiagnosisLabResult;
                 consultation.ManagementTreatment = editConsultViewModel.ManagementTreatment;
                 consultation.Recommendation = editConsultViewModel.Recommendation;
                 consultation.Pharmacy = editConsultViewModel.Pharmacy;
-                consultation.Physician = editConsultViewModel.Physician;
+                consultation.PhysicianID = editConsultViewModel.PhysicianID;
 
                 db.Entry(consultation).State = EntityState.Modified;
 
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Consults", new { id = editConsultViewModel.Id });
+
+                //return RedirectToAction("Index");
             }
             return View(editConsultViewModel);
         }
@@ -313,6 +336,14 @@ namespace cho500.Controllers
             db.Consultations.Remove(consultation);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
+        }
+
+        private void PopulatePhysicianDropDownList(object selectedPhysician = null)
+        {
+            var PhysiciansQuery = from p in db.Physicians
+                                  orderby p.Name
+                                  select p;
+            ViewBag.PhysicianID = new SelectList(PhysiciansQuery, "PhysicianID", "Name", selectedPhysician);
         }
 
         protected override void Dispose(bool disposing)

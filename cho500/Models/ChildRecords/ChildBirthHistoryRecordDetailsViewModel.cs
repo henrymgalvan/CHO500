@@ -15,7 +15,7 @@ namespace cho500.Models.ChildRecords
         //[DataType(DataType.Date)]
         //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public string BirthDate { get; set; }
-        public string BloodType { get; set; }
+        //public string BloodType { get; set; }
 
         public int Months { get; set; }
         public int Weeks { get; set; }

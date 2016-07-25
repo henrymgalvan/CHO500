@@ -19,10 +19,11 @@ namespace cho500.Entity
         public decimal HeadCircumference { get; set; }
         public decimal ChestCircumference { get; set; }
         public decimal AbdominalCircumference { get; set; }
-        public string BloodType { get; set; }
 
+        //public int? BloodTypeID { get; set; }
+        //public virtual BloodType BloodType { get; set; }
         public virtual Person Person { get; set; }
-        public virtual ICollection<ChildImmunizatonRecord> ChildImmunizationRecords { get; set; }
+        public virtual ICollection<ChildImmunizationRecord> ChildImmunizationRecords { get; set; }
         public virtual ICollection<ChildBirthFollowUpVisit> ChildBirthFollowUpVisits { get; set; }
 
     }

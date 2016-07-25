@@ -35,8 +35,9 @@ namespace cho500.Controllers
                         Weight = cv.Weight,
                         Height = cv.Height,
                         Diagnosis = cv.Diagnosis,
-                        Physician=cv.Physician,
-                        Notes=cv.Notes
+                        Physician=db.Physicians.Find(cv.PhysicianID).Name,
+                        Notes=cv.Notes,
+                        PersonID=cv.PersonID
                     });
                 }
             }
@@ -68,8 +69,9 @@ namespace cho500.Controllers
             var childBirthFollowUpVisitCreateModel = new ChildBirthFollowUpVisitCreateViewModel();
             childBirthFollowUpVisitCreateModel.PersonID = (int)patientID;
             childBirthFollowUpVisitCreateModel.Name = db.Patient.Find(patientID).FullName;
-            childBirthFollowUpVisitCreateModel.DateOfFollowup = DateTime.Now;  
+            childBirthFollowUpVisitCreateModel.DateOfFollowup = DateTime.Now;
             //ViewBag.PersonID = new SelectList(db.ChildHealthRecord, "PersonID", "TypeOfDelivery");
+            PopulatePhysicianDropDownList();
             return View(childBirthFollowUpVisitCreateModel);
         }
 
@@ -78,7 +80,7 @@ namespace cho500.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,AgeInWeeks,DateOfFollowup,Weight,Height,Physician,Diagnosis,Notes,PersonID")] ChildBirthFollowUpVisitCreateViewModel childBirthFollowUpVisitCreateViewModel)
+        public ActionResult Create([Bind(Include = "Id,AgeInWeeks,DateOfFollowup,Weight,Height,PhysicianID,Diagnosis,Notes,PersonID")] ChildBirthFollowUpVisitCreateViewModel childBirthFollowUpVisitCreateViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -87,14 +89,14 @@ namespace cho500.Controllers
                 childBirthFollowUpVisits.DateOfFollowup = childBirthFollowUpVisitCreateViewModel.DateOfFollowup;
                 childBirthFollowUpVisits.Weight = childBirthFollowUpVisitCreateViewModel.Weight;
                 childBirthFollowUpVisits.Height = childBirthFollowUpVisitCreateViewModel.Height;
-                childBirthFollowUpVisits.Physician = childBirthFollowUpVisitCreateViewModel.Physician;
+                childBirthFollowUpVisits.PhysicianID = childBirthFollowUpVisitCreateViewModel.PhysicianID;
                 childBirthFollowUpVisits.Diagnosis = childBirthFollowUpVisitCreateViewModel.Diagnosis;
                 childBirthFollowUpVisits.Notes = childBirthFollowUpVisitCreateViewModel.Notes;
                 childBirthFollowUpVisits.PersonID = childBirthFollowUpVisitCreateViewModel.PersonID;
 
                 db.ChildBirthFollowUpVisits.Add(childBirthFollowUpVisits);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details","ChildRecord", new { id = childBirthFollowUpVisitCreateViewModel.PersonID });
             }
 
             //ViewBag.PersonID = new SelectList(db.ChildHealthRecord, "PersonID", "TypeOfDelivery", childBirthFollowUpVisit.PersonID);
@@ -115,7 +117,7 @@ namespace cho500.Controllers
             }
             //ViewBag.PersonID = new SelectList(db.ChildHealthRecord, "PersonID", "TypeOfDelivery", childBirthFollowUpVisit.PersonID);
             //ViewBag.PhysicianID = new SelectList(db.Physicians, "PhysicianID", "Name", childBirthFollowUpVisit.PhysicianID);
-
+            PopulatePhysicianDropDownList(childBirthFollowUpVisit.PhysicianID);
             return View(childBirthFollowUpVisit);
         }
 
@@ -124,7 +126,7 @@ namespace cho500.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,AgeInWeeks,DateOfFollowup,Weight,Height,Physician,Diagnosis,Notes,PersonID")] ChildBirthFollowUpVisit childBirthFollowUpVisit)
+        public ActionResult Edit([Bind(Include = "Id,AgeInWeeks,DateOfFollowup,Weight,Height,PhysicianID,Diagnosis,Notes,PersonID")] ChildBirthFollowUpVisit childBirthFollowUpVisit)
         {
             if (ModelState.IsValid)
             {
@@ -161,6 +163,14 @@ namespace cho500.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        private void PopulatePhysicianDropDownList(object selectedPhysician = null)
+        {
+            var PhysiciansQuery = from p in db.Physicians
+                                 orderby p.Name
+                                 select p;
+            ViewBag.PhysicianID = new SelectList(PhysiciansQuery, "PhysicianID", "Name", selectedPhysician);
+        }
+
 
         protected override void Dispose(bool disposing)
         {

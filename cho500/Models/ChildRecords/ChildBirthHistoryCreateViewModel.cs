@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace cho500.Models.ChildRecords
+﻿namespace cho500.Models.ChildRecords
 {
     public class ChildBirthHistoryCreateViewModel
     {
@@ -17,6 +12,6 @@ namespace cho500.Models.ChildRecords
         public decimal HeadCircumference { get; set; }
         public decimal ChestCircumference { get; set; }
         public decimal AbdominalCircumference { get; set; }
-        public string BloodType { get; set; }
+        //public int BloodType { get; set; }
     }
 }

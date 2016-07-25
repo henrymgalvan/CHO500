@@ -5,78 +5,54 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using cho500.Entity;
 using cho500.Models;
 using PagedList;
 using System.Data.Entity.Infrastructure;
-//using AutoMapper;
-using System.Collections.ObjectModel;
-
+using AutoMapper;
 
 namespace cho500.Controllers
 {
     public class PatientController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-
         // GET: Patient
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewBag.BarangaySortParm = sortOrder == "Barangay" ? "Barangay_desc" : "Barangay";
             if (searchString != null)
             {
-                page = 1;
+                page = 1; 
             }
             else
             {
                 searchString = currentFilter;
             }
             ViewBag.CurrentFilter = searchString;
-
-            var people = from person in db.Patient.Include(b => b.Barangay) select person;
+            var people = db.Patient.ToList();
             List<IndexPatientViewModel> patients = new List<IndexPatientViewModel>();
             if (people.Any())
             {
-                foreach (var p in people)
-                {
-                    patients.Add(new IndexPatientViewModel()
-                    {
-                        ID = p.PersonID,
-                        FullName = p.FullName,
-                        DateOfBirth = (DateTime)p.DateOfBirth,
-                        Sex = p.Sex,
-                        CivilStatus = p.CivilStatus,
-                        Address = p.Address,
-                        Barangay = p.Barangay.Name,
-                        HouseHoldNo = p.HouseholdNo,
-                        ContactNumber = p.ContactNumber,
-                        Notes = p.Notes
-                    });
-                }
+                patients = Mapper.Map<List<Person>, List<IndexPatientViewModel>>(people);
             }
             if (!string.IsNullOrEmpty(searchString))
             {
-                patients = patients.Where(p => p.FullName.ToUpper().Contains(searchString.ToUpper()) || p.Barangay.ToString().ToUpper().Contains(searchString.ToUpper())).ToList();
+                patients = patients.Where(p => p.FullName.ToUpper().Contains(searchString.ToUpper())).ToList();
+
             }
+
             switch (sortOrder)
             {
                 case "name_desc":
                     patients = patients.OrderByDescending(s => s.FullName).ToList();
                     break;
-                case "Barangay":
-                    patients = patients.OrderBy(s => s.Barangay.ToString()).ToList();
-                    break;
-                case "Barangay_desc":
-                    patients = patients.OrderByDescending(s => s.Barangay.ToString()).ToList();
-                    break;
+
                 default:
                     patients = patients.OrderBy(s => s.FullName).ToList();
                     break;
             }
-            int pageSize = 8;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
             return View(patients.ToPagedList(pageNumber, pageSize));
         }
@@ -99,10 +75,9 @@ namespace cho500.Controllers
         // GET: Patient/Create
         public ActionResult Create()
         {
-            PopulateBarangaysDropDownList();
+            //PopulateBarangaysDropDownList();
+            PopulateBloodTypeDropDownList();
             CreatePersonViewModel Model = new CreatePersonViewModel();
-            Model.DateCreated = DateTime.Now;
-
             return View(Model);
         }
 
@@ -111,26 +86,15 @@ namespace cho500.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "FirstName,MiddleName,LastName,DateOfBirth,Sex,CivilStatus,Address,BarangayID,HouseHoldNo,ContactNumber,Encoder,DateCreated,Notes")] CreatePersonViewModel createPersonViewModel)
+        public ActionResult Create([Bind(Include = "FirstName,MiddleName,LastName,DateOfBirth,Sex,CivilStatus,BloodTypeID,PhilHealthNo,ContactNumber,Encoder,Notes")] CreatePersonViewModel createPersonViewModel)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     var patient = new Person();
-                    patient.FirstName = createPersonViewModel.FirstName;
-                    patient.MiddleName = createPersonViewModel.MiddleName;
-                    patient.LastName = createPersonViewModel.LastName;
-                    patient.DateOfBirth = createPersonViewModel.DateOfBirth;
-                    patient.Sex = (Person.Gender)createPersonViewModel.Sex;
-                    patient.CivilStatus = (Person.State)createPersonViewModel.CivilStatus;
-                    patient.Address = createPersonViewModel.Address;
-                    patient.BarangayID = createPersonViewModel.BarangayID;
-                    patient.HouseholdNo = createPersonViewModel.HouseHoldNo;
-                    patient.ContactNumber = createPersonViewModel.ContactNumber;
-                    patient.Encoder = createPersonViewModel.Encoder;
-                    patient.DateCreated = createPersonViewModel.DateCreated;
-                    patient.Notes = createPersonViewModel.Notes;
+                    patient = Mapper.Map<CreatePersonViewModel, Person>(createPersonViewModel);
+                    patient.DateCreated = DateTime.Now;
                     db.Patient.Add(patient);
                     db.SaveChanges();
                     return RedirectToAction("Index");
@@ -140,7 +104,8 @@ namespace cho500.Controllers
             {
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
             }
-            PopulateBarangaysDropDownList(createPersonViewModel.BarangayID);
+            //PopulateBarangaysDropDownList(createPersonViewModel.BarangayID);
+            PopulateBloodTypeDropDownList(createPersonViewModel.BloodTypeID);
             return View(createPersonViewModel);
         }
 
@@ -157,22 +122,9 @@ namespace cho500.Controllers
                 return HttpNotFound();
             }
             EditPersonViewModel model = new EditPersonViewModel();
-            model.ID = person.PersonID;
-            model.FirstName = person.FirstName;
-            model.MiddleName = person.MiddleName;
-            model.LastName = person.LastName;
-            model.DateOfBirth = (DateTime)person.DateOfBirth;
-            model.Sex = person.Sex;
-            model.CivilStatus = person.CivilStatus;
-            model.Address = person.Address;
-            model.BarangayID = person.BarangayID;
-            model.HouseHoldNo = person.HouseholdNo;
-            model.ContactNumber = person.ContactNumber;
-            model.Encoder = person.Encoder;
-            model.DateCreated = person.DateCreated;
-            model.Notes = person.Notes;
-
-            PopulateBarangaysDropDownList(person.BarangayID);
+            model = Mapper.Map<Person, EditPersonViewModel>(person);
+            //PopulateBarangaysDropDownList(person.BarangayID);
+            PopulateBloodTypeDropDownList(person.BloodTypeID);
             return View(model);
         }
 
@@ -181,29 +133,15 @@ namespace cho500.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,FirstName,MiddleName,LastName,DateOfBirth,Sex,CivilStatus,Address,BarangayID,HouseHoldNo,ContactNumber,Encoder,DateCreated,Notes")] EditPersonViewModel editPersonViewModel)
+        public ActionResult Edit([Bind(Include = "PersonID,FirstName,MiddleName,LastName,DateOfBirth,Sex,CivilStatus,BloodTypeID,PhilHealthNo,ContactNumber,Notes")] EditPersonViewModel editPersonViewModel)
         {
-
             try
             {
                 if (ModelState.IsValid)
                 {
-                    Person person = db.Patient.Find(editPersonViewModel.ID);
+                    var person = Mapper.Map<EditPersonViewModel, Person>(editPersonViewModel);
+                    person.DateCreated = DateTime.Now;
                     db.Entry(person).State = EntityState.Modified;
-                    person.FirstName = editPersonViewModel.FirstName;
-                    person.MiddleName = editPersonViewModel.MiddleName;
-                    person.LastName = editPersonViewModel.LastName;
-                    person.DateOfBirth = editPersonViewModel.DateOfBirth;
-                    person.Sex = editPersonViewModel.Sex;
-                    person.CivilStatus = editPersonViewModel.CivilStatus;
-                    person.Address = editPersonViewModel.Address;
-                    person.BarangayID = editPersonViewModel.BarangayID;
-                    person.HouseholdNo = editPersonViewModel.HouseHoldNo;
-                    person.ContactNumber = editPersonViewModel.ContactNumber;
-                    person.Encoder = editPersonViewModel.Encoder;
-                    person.DateCreated = editPersonViewModel.DateCreated;
-                    person.Notes = editPersonViewModel.Notes;
-
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -212,6 +150,8 @@ namespace cho500.Controllers
             {
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
             }
+            //PopulateBarangaysDropDownList(editPersonViewModel.BarangayID);
+            PopulateBloodTypeDropDownList(editPersonViewModel.BloodTypeID);
             return View(editPersonViewModel);
         }
 
@@ -247,6 +187,14 @@ namespace cho500.Controllers
                                  orderby b.Name
                                  select b;
             ViewBag.BarangayID = new SelectList(barangaysQuery, "BarangayID", "Name", selectedBarangay);
+        }
+
+        private void PopulateBloodTypeDropDownList(object selectedBloodType = null)
+        {
+            var BloodTypeQuery = from bt in db.BloodType
+                                 orderby bt.Type
+                                 select bt;
+            ViewBag.BloodTypeID = new SelectList(BloodTypeQuery, "BloodTypeID", "Type", selectedBloodType);
         }
 
         protected override void Dispose(bool disposing)

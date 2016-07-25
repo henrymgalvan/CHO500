@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using cho500.Entity;
 using cho500.Models;
@@ -32,8 +31,8 @@ namespace cho500.Controllers
                         {
                             PatientId = c.PersonID,
                             PatientName = db.Patient.First(x => x.PersonID == c.PersonID).FullName,
-                            BirthDate = BDate.HasValue ? BDate.Value.ToString("yyyy-mm-dd") : "NoDate",
-                            BloodType = c.BloodType,
+                            BirthDate = BDate.HasValue ? BDate.Value.ToString("yyyy-MM-dd") : "NoDate",
+                            //BloodType = c.BloodType.Type,
                             Months = c.Months,
                             Weeks = c.Weeks,
                             Days = c.Days,
@@ -64,9 +63,9 @@ namespace cho500.Controllers
                 ChildBirthHistoryRecordDetailsViewModel childBirthHistoryRecordDetailsViewModel = new ChildBirthHistoryRecordDetailsViewModel();
                 childBirthHistoryRecordDetailsViewModel.PatientId = childRecordDetail.PersonID;
                 childBirthHistoryRecordDetailsViewModel.PatientName = db.Patient.First(x => x.PersonID == childRecordDetail.PersonID).FullName;
-                childBirthHistoryRecordDetailsViewModel.BirthDate = BDate.HasValue? BDate.Value.ToString("yyyy-mm-dd"):"NoDate";
-                childBirthHistoryRecordDetailsViewModel.BloodType = childRecordDetail.BloodType;
-                childBirthHistoryRecordDetailsViewModel.Months = childRecordDetail.Weeks;
+                childBirthHistoryRecordDetailsViewModel.BirthDate = BDate.HasValue ? BDate.Value.ToString("yyyy-MM-dd") : "NoDate";
+                //childBirthHistoryRecordDetailsViewModel.BloodType = db.BloodType.Find(childRecordDetail.BloodTypeID).Type;
+                childBirthHistoryRecordDetailsViewModel.Months = childRecordDetail.Months;
                 childBirthHistoryRecordDetailsViewModel.Weeks = childRecordDetail.Weeks;
                 childBirthHistoryRecordDetailsViewModel.Days = childRecordDetail.Days;
                 childBirthHistoryRecordDetailsViewModel.TypeOfDelivery = childRecordDetail.TypeOfDelivery;
@@ -76,39 +75,55 @@ namespace cho500.Controllers
                 childBirthHistoryRecordDetailsViewModel.ChestCircumference = childRecordDetail.ChestCircumference;
                 childBirthHistoryRecordDetailsViewModel.AbdominalCircumference = childRecordDetail.AbdominalCircumference;
 
-                childBirthHistoryRecordDetailsViewModel.ChildImmunizationRecordsViewModel = new List<ChildImmunizationRecordViewModel>();
-
+                //childBirthHistoryRecordDetailsViewModel.ChildImmunizationRecordsViewModel = new List<ChildImmunizationRecordViewModel>();
                 List<ChildBirthFollowUpVisit> cbFollowUpVisitList = db.ChildBirthFollowUpVisits.Where(v => v.PersonID == id).ToList();
-                
-
                 var cbFollowUpVisitViewModelList = new List<ChildBirthFollowUpVisitViewModel>();
                 if (cbFollowUpVisitList.Any())
                 {
                     foreach (var v in cbFollowUpVisitList)
                     {
-
                         cbFollowUpVisitViewModelList.Add(new ChildBirthFollowUpVisitViewModel()
                         {
                             Id = v.Id,
                             AgeInWeeks = v.AgeInWeeks,
-                            DateOfFollowUp=v.DateOfFollowup.HasValue ? v.DateOfFollowup.Value.ToString("yyyy-mm-dd") : "NoDate",
-                            Weight=v.Weight,
-                            Height=v.Height,
-                            Physician=v.Physician,
-                            Diagnosis=v.Diagnosis,
-                            Notes=v.Notes
+                            DateOfFollowUp = v.DateOfFollowup.HasValue ? v.DateOfFollowup.Value.ToString("MM-dd-yyyy") : "No Date",
+                            Weight = v.Weight,
+                            Height = v.Height,
+                            Physician = db.Physicians.Find(v.PhysicianID).Name,
+                            Diagnosis = v.Diagnosis,
+                            Notes = v.Notes
                         });
                     }
                 }
                 childBirthHistoryRecordDetailsViewModel.ChildBirthFollowUpVisitsViewModel = cbFollowUpVisitViewModelList;
+
+                List<ChildImmunizationRecord> cImmunizationRecord = db.ChildImmunizationRecords.Where(v => v.PersonID == id).ToList();
+                var cImmunizationRecordViewModelList = new List<ChildImmunizationRecordViewModel>();
+                if (cImmunizationRecord.Any())
+                {
+                    foreach (var i in cImmunizationRecord)
+                        cImmunizationRecordViewModelList.Add(new ChildImmunizationRecordViewModel()
+                        {
+                            Id = i.Id,
+                            VaccineName = i.Vaccine.Name,
+                            First = i.First.HasValue ? i.First.Value.ToString("MM-dd-yyyy") : "No Date",
+                            Second = i.Second.HasValue ? i.Second.Value.ToString("MM-dd-yyyy") : "No Date",
+                            Third = i.Third.HasValue ? i.Third.Value.ToString("MM-dd-yyyy") : "No Date",
+                            Booster1 = i.Booster1.HasValue ? i.Booster1.Value.ToString("MM-dd-yyyy") : "No Date",
+                            Booster2 = i.Booster2.HasValue ? i.Booster2.Value.ToString("MM-dd-yyyy") : "No Date",
+                            Booster3 = i.Booster3.HasValue ? i.Booster3.Value.ToString("MM-dd-yyyy") : "No Date",
+                            Reaction=i.Reaction
+                        });
+                }
+                childBirthHistoryRecordDetailsViewModel.ChildImmunizationRecordsViewModel = cImmunizationRecordViewModelList;
                 return View(childBirthHistoryRecordDetailsViewModel);
             }
-
         }
 
         // GET: ChildRecord/Create
         public ActionResult Create(int PatientID)
         {
+            PopulateBloodTypeDropDownList();
             var childRecord = db.ChildHealthRecord.Find(PatientID);
             if (childRecord != null)
             {
@@ -129,7 +144,7 @@ namespace cho500.Controllers
         //public ActionResult Create([Bind(Include = "PatientID,PatientName,BirthDate")] ChildHealthRecordCreateViewModel childHealthRecordCreateViewModel)
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PatientID,PatientName,BirthDate,Months,Weeks,Days,TypeOfDelivery,BirthWeightInPounds,BirthLength,HeadCircumference,ChestCircumference,AbdominalCircumference,BloodType")] ChildHealthRecordCreateViewModel childHealthRecordCreateViewModel)
+        public ActionResult Create([Bind(Include = "PatientID,PatientName,BirthDate,Months,Weeks,Days,TypeOfDelivery,BirthWeightInPounds,BirthLength,HeadCircumference,ChestCircumference,AbdominalCircumference,BloodTypeID")] ChildHealthRecordCreateViewModel childHealthRecordCreateViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -144,7 +159,7 @@ namespace cho500.Controllers
                 childHealthRecord.HeadCircumference = childHealthRecordCreateViewModel.HeadCircumference;
                 childHealthRecord.ChestCircumference = childHealthRecordCreateViewModel.ChestCircumference;
                 childHealthRecord.AbdominalCircumference = childHealthRecordCreateViewModel.AbdominalCircumference;
-                childHealthRecord.BloodType = childHealthRecordCreateViewModel.BloodType;
+                //childHealthRecord.BloodTypeID = childHealthRecordCreateViewModel.BloodTypeID;
 
                 db.ChildHealthRecord.Add(childHealthRecord);
                 db.SaveChanges();
@@ -166,24 +181,23 @@ namespace cho500.Controllers
             {
                 return HttpNotFound();
             }
+            ChildBirthHistoryEditViewModel childBirthHistoryEditViewModel = new ChildBirthHistoryEditViewModel();
+            childBirthHistoryEditViewModel.PatientID = childHealthRecord.PersonID;
+            childBirthHistoryEditViewModel.PatientName = db.Patient.Find(childHealthRecord.PersonID).FullName;
+            childBirthHistoryEditViewModel.BirthDate = (DateTime)db.Patient.Find(childHealthRecord.PersonID).DateOfBirth;
+            //childBirthHistoryEditViewModel.BloodTypeID = (int)childHealthRecord.BloodTypeID;
+            childBirthHistoryEditViewModel.Months = childHealthRecord.Months;
+            childBirthHistoryEditViewModel.Weeks = childHealthRecord.Weeks;
+            childBirthHistoryEditViewModel.Days = childHealthRecord.Days;
+            childBirthHistoryEditViewModel.TypeOfDelivery = childHealthRecord.TypeOfDelivery;
+            childBirthHistoryEditViewModel.BirthWeightInPounds = childHealthRecord.BirthWeightInPounds;
+            childBirthHistoryEditViewModel.BirthLength = childHealthRecord.BirthLength;
+            childBirthHistoryEditViewModel.HeadCircumference = childHealthRecord.HeadCircumference;
+            childBirthHistoryEditViewModel.ChestCircumference = childHealthRecord.ChestCircumference;
+            childBirthHistoryEditViewModel.AbdominalCircumference = childHealthRecord.AbdominalCircumference;
 
-            ChildBirthHistoryEditViewModel childBirthHistoryEditModel = new ChildBirthHistoryEditViewModel();
-            childBirthHistoryEditModel.PatientID = childHealthRecord.PersonID;
-            childBirthHistoryEditModel.PatientName = db.Patient.Find(childHealthRecord.PersonID).FullName;
-            childBirthHistoryEditModel.BirthDate = (DateTime) db.Patient.Find(childHealthRecord.PersonID).DateOfBirth;
-            childBirthHistoryEditModel.BloodType = childHealthRecord.BloodType;
-            childBirthHistoryEditModel.Months = childHealthRecord.Months;
-            childBirthHistoryEditModel.Weeks = childHealthRecord.Weeks;
-            childBirthHistoryEditModel.Days = childHealthRecord.Days;
-            childBirthHistoryEditModel.TypeOfDelivery = childHealthRecord.TypeOfDelivery;
-            childBirthHistoryEditModel.BirthWeightInPounds = childHealthRecord.BirthWeightInPounds;
-            childBirthHistoryEditModel.BirthLength = childHealthRecord.BirthLength;
-            childBirthHistoryEditModel.HeadCircumference = childHealthRecord.HeadCircumference;
-            childBirthHistoryEditModel.ChestCircumference = childHealthRecord.ChestCircumference;
-            childBirthHistoryEditModel.AbdominalCircumference = childHealthRecord.AbdominalCircumference;
-
-
-            return View(childBirthHistoryEditModel);
+            //PopulateBloodTypeDropDownList(childHealthRecord.BloodTypeID);
+            return View(childBirthHistoryEditViewModel);
             // ViewBag.ChildBirthHistoryID = new SelectList(db.ChildBirthHistories, "Id", "TypeOfDelivery", childHealthRecord.ChildBirthHistoryId);
             //return View(childHealthRecord);
         }
@@ -193,13 +207,14 @@ namespace cho500.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,PatientID,PatientName,BirthDate,BloodType,Months,Weeks,Days,TypeOfDelivery,BirthWeightInPounds,BirthLength,HeadCircumference,ChestCircumference,AbdominalCircumference")] ChildBirthHistoryEditViewModel childBirthHistoryEditViewModel)
+        public ActionResult Edit([Bind(Include = "Id,PatientID,PatientName,BirthDate,BloodTypeID,Months,Weeks,Days,TypeOfDelivery,BirthWeightInPounds,BirthLength,HeadCircumference,ChestCircumference,AbdominalCircumference")] ChildBirthHistoryEditViewModel childBirthHistoryEditViewModel)
         {
             if (ModelState.IsValid)
             {
                 var childHealthRecord = new ChildHealthRecord();
                 childHealthRecord.PersonID = childBirthHistoryEditViewModel.PatientID;
                 childHealthRecord.Months = childBirthHistoryEditViewModel.Months;
+                childHealthRecord.Weeks = childBirthHistoryEditViewModel.Weeks;
                 childHealthRecord.Days = childBirthHistoryEditViewModel.Days;
                 childHealthRecord.TypeOfDelivery = childBirthHistoryEditViewModel.TypeOfDelivery;
                 childHealthRecord.BirthWeightInPounds = childBirthHistoryEditViewModel.BirthWeightInPounds;
@@ -207,7 +222,7 @@ namespace cho500.Controllers
                 childHealthRecord.HeadCircumference = childBirthHistoryEditViewModel.HeadCircumference;
                 childHealthRecord.ChestCircumference = childBirthHistoryEditViewModel.ChestCircumference;
                 childHealthRecord.AbdominalCircumference = childBirthHistoryEditViewModel.AbdominalCircumference;
-                childHealthRecord.BloodType = childBirthHistoryEditViewModel.BloodType;
+                //childHealthRecord.BloodTypeID = childBirthHistoryEditViewModel.BloodTypeID;
 
                 db.Entry(childHealthRecord).State = EntityState.Modified;
                 db.SaveChanges();
@@ -241,6 +256,14 @@ namespace cho500.Controllers
             db.ChildHealthRecord.Remove(childHealthRecord);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        private void PopulateBloodTypeDropDownList(object selectedBloodType = null)
+        {
+            var BloodTypeQuery = from bt in db.BloodType
+                                 orderby bt.Type
+                                 select bt;
+            ViewBag.BloodTypeID = new SelectList(BloodTypeQuery, "BloodTypeID", "Type", selectedBloodType);
         }
 
         protected override void Dispose(bool disposing)

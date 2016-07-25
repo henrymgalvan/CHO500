@@ -7,7 +7,7 @@ using System.Web;
 
 namespace cho500.Models.ChildRecords
 {
-    public class ChildBirthFollowUpVisitIndexViewModel
+    public class ChildBirthFollowUpVisitIndexViewModel  
     {
         public int Id { get; set; }
         public string Name { get; set; }

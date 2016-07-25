@@ -4,13 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using cho500.Entity;
 
 namespace cho500.Models
 {
     public class EditPersonViewModel
     {
-        [HiddenInput]
-        public int ID { get; set; }
+        [HiddenInput(DisplayValue = false)]
+        public int PersonID { get; set; }
         [Required]
         [Display(Name = "First Name")]
         [StringLength(50, MinimumLength = 1)]    //ErrorMessage = "First name cannot be longer than 50 characters."
@@ -24,16 +25,14 @@ namespace cho500.Models
         public string LastName { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime DateOfBirth { get; set; }
-        public Entity.Person.Gender Sex { get; set; }
-        public Entity.Person.State CivilStatus { get; set; }
-        public string Address { get; set; }
-        public int BarangayID { get; set; }
-        public int HouseHoldNo { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public int? BloodTypeID { get; set; }
+        public virtual BloodType BloodType { get; set; }
+        public Person.Gender Sex { get; set; }
+        public Person.State CivilStatus { get; set; }
+        public string PhilHealthNo { get; set; }   //new
         [Phone]
         public string ContactNumber { get; set; }
-        public string Encoder { get; set; }
-        public DateTime DateCreated { get; set; }
         [DataType(DataType.MultilineText)]
         public string Notes { get; set; }
 
