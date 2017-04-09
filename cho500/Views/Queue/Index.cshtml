@@ -1,0 +1,87 @@
+﻿@model IEnumerable<cho500.Models.Queue.QueueListViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.QueueNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateTimeQueued)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Birthday)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhilHealthNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ChiefComplaint)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Barangay)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HouseholdNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Served)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.QueueNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateTimeQueued)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Birthday)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PhilHealthNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ChiefComplaint)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Barangay)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HouseholdNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Served)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

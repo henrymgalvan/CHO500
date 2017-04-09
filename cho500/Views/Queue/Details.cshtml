@@ -1,0 +1,114 @@
+﻿@model cho500.Entity.Queue
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Queue</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.QueueNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QueueNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateQueued)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateQueued)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MiddleName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MiddleName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FamilyName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FamilyName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Birthday)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Birthday)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhilHealthNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhilHealthNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ChiefComplaint)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ChiefComplaint)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Barangay)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Barangay)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HouseholdNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HouseholdNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Served)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Served)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
