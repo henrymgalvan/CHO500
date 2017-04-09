@@ -204,6 +204,7 @@
     <Compile Include="Controllers\ChildRecordController.cs" />
     <Compile Include="Controllers\ConsultReportController.cs" />
     <Compile Include="Controllers\ConsultsController.cs" />
+    <Compile Include="Controllers\EmptyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HouseholdMembersController.cs" />
     <Content Include="cho505DataSet.xsc">
@@ -485,6 +486,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Empty\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
