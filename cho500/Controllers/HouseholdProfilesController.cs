@@ -154,6 +154,8 @@ namespace cho500.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(householdProfile).State = EntityState.Modified;
+                //Person person = db.Patient.Find(householdProfile.PersonID);
+                //person.
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

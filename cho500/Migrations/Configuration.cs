@@ -32,15 +32,25 @@ namespace cho500.Migrations
                          new Vaccine { Name = "Typhoid" }
                  );
 
+            //context.Physicians.AddOrUpdate(
+            //    p => p.Name,
+            //        new Physician { Name = "Sheila C. Sabado, M.D." },
+            //        new Physician { Name = "Aurora H. Cuison, M.D." },
+            //        new Physician { Name = "Benjamin Marcial O. Bautista, M.D." },
+            //        new Physician { Name = "Ma. Julita P. De Venecia, M.D." },
+            //        new Physician { Name = "Lydwina Bernardo, M.D." },
+            //        new Physician { Name = "Doris Jovellanos, M.D." },
+            //        new Physician { Name = "Anne Lourdes Paragas, M.D." }
+            //    );
             context.Physicians.AddOrUpdate(
                 p => p.Name,
-                    new Physician { Name = "Sheila C. Sabado, M.D." },
-                    new Physician { Name = "Aurora H. Cuison, M.D." },
-                    new Physician { Name = "Benjamin Marcial O. Bautista, M.D." },
-                    new Physician { Name = "Ma. Julita P. De Venecia, M.D." },
-                    new Physician { Name = "Lydwina Bernardo, M.D." },
-                    new Physician { Name = "Doris Jovellanos, M.D." },
-                    new Physician { Name = "Anne Lourdes Paragas, M.D." }
+                    new Physician { Name = "Mel, M.D." },
+                    new Physician { Name = "John, M.D." },
+                    new Physician { Name = "Mark, M.D." },
+                    new Physician { Name = "May, M.D." },
+                    new Physician { Name = "Patrick, M.D." },
+                    new Physician { Name = "Johnson, M.D." },
+                    new Physician { Name = "Jake, M.D." }
                 );
 
             context.Classifications.AddOrUpdate(
@@ -48,7 +58,7 @@ namespace cho500.Migrations
                     new HouseHoldClassificationPerVisit { Classification = "N", Note = "Newborn 0-28 days" },
                     new HouseHoldClassificationPerVisit { Classification = "I", Note = "Infant 1-11 months" },
                     new HouseHoldClassificationPerVisit { Classification = "C", Note = "Child 12-59 months" },
-                    new HouseHoldClassificationPerVisit { Classification =  "P", Note = "Pregnant" },
+                    new HouseHoldClassificationPerVisit { Classification = "P", Note = "Pregnant" },
                     new HouseHoldClassificationPerVisit { Classification = "PP", Note = "Postpartum Up to 42 days after delivery" },
                     new HouseHoldClassificationPerVisit { Classification = "TBS", Note = "TB Suspect; Cough > 2 weeks" },
                     new HouseHoldClassificationPerVisit { Classification = "Ad", Note = "Adolescent(10-19 years" },
@@ -103,6 +113,31 @@ namespace cho500.Migrations
                         new Barangay { Name = "Tambac" },
                         new Barangay { Name = "Tapuac" },
                         new Barangay { Name = "Tebeng" }
+                );
+            context.ICD_10_CM_CodeRange.AddOrUpdate(
+                icd => icd.CodeRange,
+                        new ICD_10_CM_CodeRange { CodeRange = "A00-B99", Description = "Certain infectious and parasitic diseases" },
+                        new ICD_10_CM_CodeRange { CodeRange = "C00-D49", Description = "Neoplasms" },
+                        new ICD_10_CM_CodeRange { CodeRange = "D50-D99", Description = "Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism" },
+                        new ICD_10_CM_CodeRange { CodeRange = "E00-E99", Description = "Endocrine, nutritional and metabolic diseases" },
+                        new ICD_10_CM_CodeRange { CodeRange = "F01-F99", Description = "Mental, Behavioral and Neurodevelopmental disorders" },
+                        new ICD_10_CM_CodeRange { CodeRange = "G00-G99", Description = "Diseases of the nervous system" },
+                        new ICD_10_CM_CodeRange { CodeRange = "H00-H59", Description = "Diseases of the eye and adnexa" },
+                        new ICD_10_CM_CodeRange { CodeRange = "H60-H95", Description = "Diseases of the ear and mastoid process" },
+                        new ICD_10_CM_CodeRange { CodeRange = "I00-I99", Description = "Diseases of the circulatory system" },
+                        new ICD_10_CM_CodeRange { CodeRange = "J00-J99", Description = "Diseases of the respiratory system" },
+                        new ICD_10_CM_CodeRange { CodeRange = "K00-K95", Description = "Diseases of the digestive system" },
+                        new ICD_10_CM_CodeRange { CodeRange = "L00-L99", Description = "Diseases of the skin and subcutaneous tissue" },
+                        new ICD_10_CM_CodeRange { CodeRange = "M00-M99", Description = "Diseases of the musculoskeletal system and connective tissue" },
+                        new ICD_10_CM_CodeRange { CodeRange = "N00-N99", Description = "Diseases of the genitourinary system" },
+                        new ICD_10_CM_CodeRange { CodeRange = "O00-O9A", Description = "Pregnancy, childbirth and the puerperium" },
+                        new ICD_10_CM_CodeRange { CodeRange = "P00-P96", Description = "Certain conditions originating in the perinatal period" },
+                        new ICD_10_CM_CodeRange { CodeRange = "Q00-Q99", Description = "Congenital malformations, deformations and chromosomal abnormalities" },
+                        new ICD_10_CM_CodeRange { CodeRange = "R00-R99", Description = "Symptoms, signs and abnormal clinical and laboratory findings, not elsewhere classified" },
+                        new ICD_10_CM_CodeRange { CodeRange = "S00-T88", Description = "Injury, poisoning and certain other consequences of external causes" },
+                        new ICD_10_CM_CodeRange { CodeRange = "V00-Y99", Description = "External causes of morbidity" },
+                        new ICD_10_CM_CodeRange { CodeRange = "Z00-Z99", Description = "Factors influencing health status and contact with health services" }
+
                 );
         }
     }

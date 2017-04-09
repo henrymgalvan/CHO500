@@ -47,5 +47,14 @@ namespace cho500.Models
         public DbSet<ChildImmunizationRecord> ChildImmunizationRecords { get; set; }
 
         public System.Data.Entity.DbSet<cho500.Entity.HouseholdMember> HouseholdMembers { get; set; }
+
+        public DbSet<ICD_10_CM_Category> ICD_10_CM_Category { get; set; }
+        public DbSet<ICD_10_CM_DiagnosisSectionCode> ICD_10_CM_DiagnosisSectionCode { get; set; }
+        public DbSet<ICD_10_CM_DiagnosisCode> ICD_10_CM_DiagnosisCode { get; set; }
+        public DbSet<ICD_10_CM_CodeRange> ICD_10_CM_CodeRange { get; set; }
+
+        public System.Data.Entity.DbSet<cho500.Entity.Queue> Queues { get; set; }
+
+        public DbSet<PatientHealthProfile> PatientHealthProfiles { get; set; }
     }
 }

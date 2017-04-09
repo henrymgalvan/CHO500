@@ -219,18 +219,31 @@
     </Content>
     <None Include="Controllers\HouseholdProfilesController - Copy.cs1" />
     <Compile Include="Controllers\HouseholdProfilesController.cs" />
+    <Compile Include="Controllers\ICD_10_CM_CategoryController.cs" />
+    <Compile Include="Controllers\ICD_10_CM_CodeRangeController.cs" />
+    <Compile Include="Controllers\ICD_10_CM_DiagnosisCodeController.cs" />
+    <Compile Include="Controllers\ICD_10_CM_DiagnosisSectionCodeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <None Include="Controllers\PatientController - Copy.cs1" />
     <Compile Include="Controllers\PatientController.cs" />
+    <Compile Include="Controllers\PatientHealthProfilesController.cs" />
+    <Compile Include="Controllers\PeopleController.cs" />
     <Compile Include="Controllers\PhysiciansController.cs" />
+    <Compile Include="Controllers\QueueController.cs" />
     <Compile Include="Controllers\VaccinesController.cs" />
     <Compile Include="Entity\Barangay.cs" />
     <Compile Include="Entity\BloodType.cs" />
     <Compile Include="Entity\ChildHealthRecord.cs" />
+    <Compile Include="Entity\PatientHealthProfile.cs" />
+    <Compile Include="Entity\Queue.cs" />
     <Compile Include="Entity\Consultation.cs" />
     <Compile Include="Entity\HouseHoldClassificationPerVisit.cs" />
     <Compile Include="Entity\HouseholdMember.cs" />
     <Compile Include="Entity\HouseholdProfile.cs" />
+    <Compile Include="Entity\ICD_10_CM_Category.cs" />
+    <Compile Include="Entity\ICD_10_CM_CodeRange.cs" />
+    <Compile Include="Entity\ICD_10_CM_DiagnosisCode.cs" />
+    <Compile Include="Entity\ICD_10_CM_DiagnosisSectionCode.cs" />
     <Compile Include="Entity\Physician.cs" />
     <Compile Include="Entity\ChildBirthFollowUpVisit.cs" />
     <Compile Include="Entity\ChildImmunizationRecord.cs" />
@@ -246,6 +259,42 @@
     <Compile Include="Migrations\201605121516133_InitialCreate.cs" />
     <Compile Include="Migrations\201605121516133_InitialCreate.Designer.cs">
       <DependentUpon>201605121516133_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701261244002_someupdate.cs" />
+    <Compile Include="Migrations\201701261244002_someupdate.Designer.cs">
+      <DependentUpon>201701261244002_someupdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702100441111_ICD_added.cs" />
+    <Compile Include="Migrations\201702100441111_ICD_added.Designer.cs">
+      <DependentUpon>201702100441111_ICD_added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702100525524_DiagnosisCodeRange.cs" />
+    <Compile Include="Migrations\201702100525524_DiagnosisCodeRange.Designer.cs">
+      <DependentUpon>201702100525524_DiagnosisCodeRange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702100621093_modifyICD_10_CM_Category.cs" />
+    <Compile Include="Migrations\201702100621093_modifyICD_10_CM_Category.Designer.cs">
+      <DependentUpon>201702100621093_modifyICD_10_CM_Category.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702100742537_modifyCategoryToString.cs" />
+    <Compile Include="Migrations\201702100742537_modifyCategoryToString.Designer.cs">
+      <DependentUpon>201702100742537_modifyCategoryToString.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702140305501_QueueTableAdded.cs" />
+    <Compile Include="Migrations\201702140305501_QueueTableAdded.Designer.cs">
+      <DependentUpon>201702140305501_QueueTableAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702140318577_QueueNoAdded.cs" />
+    <Compile Include="Migrations\201702140318577_QueueNoAdded.Designer.cs">
+      <DependentUpon>201702140318577_QueueNoAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702140556584_DateToDateTimeQueueTable.cs" />
+    <Compile Include="Migrations\201702140556584_DateToDateTimeQueueTable.Designer.cs">
+      <DependentUpon>201702140556584_DateToDateTimeQueueTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702140731420_AddedPatientHealthProfile.cs" />
+    <Compile Include="Migrations\201702140731420_AddedPatientHealthProfile.Designer.cs">
+      <DependentUpon>201702140731420_AddedPatientHealthProfile.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ChildRecords\ChildBirthFollowUpVisitEditViewModel.cs" />
@@ -263,6 +312,9 @@
     <Compile Include="Models\ChildRecords\ChildImmunizationRecordEditViewModel.cs" />
     <Compile Include="Models\ChildRecords\ChildImmunizationRecordViewModel.cs" />
     <Compile Include="Models\Households\HouseholdIndexViewModel.cs" />
+    <Compile Include="Models\Patient\DetailsPatientViewModel.cs" />
+    <Compile Include="Models\Patient\PatientConsultationSummary.cs" />
+    <Compile Include="Models\Queue\QueueListViewModel.cs" />
     <Compile Include="Models\temp\CreateAnthroViewModel.cs" />
     <Compile Include="Models\CreateConsultViewModel.cs" />
     <Compile Include="Models\temp\CreateDiagnosisViewModel.cs" />
@@ -283,6 +335,41 @@
     <Content Include="Views\BarangayHouseholds\Details.cshtml" />
     <Content Include="Views\BarangayHouseholds\Edit.cshtml" />
     <Content Include="Views\BarangayHouseholds\Index.cshtml" />
+    <Content Include="Views\People\Create.cshtml" />
+    <Content Include="Views\People\Delete.cshtml" />
+    <Content Include="Views\People\Details.cshtml" />
+    <Content Include="Views\People\Edit.cshtml" />
+    <Content Include="Views\People\Index.cshtml" />
+    <Content Include="Views\ICD_10_CM_CodeRange\Create.cshtml" />
+    <Content Include="Views\ICD_10_CM_CodeRange\Delete.cshtml" />
+    <Content Include="Views\ICD_10_CM_CodeRange\Details.cshtml" />
+    <Content Include="Views\ICD_10_CM_CodeRange\Edit.cshtml" />
+    <Content Include="Views\ICD_10_CM_CodeRange\Index.cshtml" />
+    <Content Include="Views\ICD_10_CM_DiagnosisCode\Create.cshtml" />
+    <Content Include="Views\ICD_10_CM_DiagnosisCode\Delete.cshtml" />
+    <Content Include="Views\ICD_10_CM_DiagnosisCode\Details.cshtml" />
+    <Content Include="Views\ICD_10_CM_DiagnosisCode\Edit.cshtml" />
+    <Content Include="Views\ICD_10_CM_DiagnosisCode\Index.cshtml" />
+    <Content Include="Views\ICD_10_CM_DiagnosisSectionCode\Create.cshtml" />
+    <Content Include="Views\ICD_10_CM_DiagnosisSectionCode\Delete.cshtml" />
+    <Content Include="Views\ICD_10_CM_DiagnosisSectionCode\Details.cshtml" />
+    <Content Include="Views\ICD_10_CM_DiagnosisSectionCode\Edit.cshtml" />
+    <Content Include="Views\ICD_10_CM_DiagnosisSectionCode\Index.cshtml" />
+    <Content Include="Views\ICD_10_CM_Category\Create.cshtml" />
+    <Content Include="Views\ICD_10_CM_Category\Delete.cshtml" />
+    <Content Include="Views\ICD_10_CM_Category\Details.cshtml" />
+    <Content Include="Views\ICD_10_CM_Category\Edit.cshtml" />
+    <Content Include="Views\ICD_10_CM_Category\Index.cshtml" />
+    <Content Include="Views\Queue\Create.cshtml" />
+    <Content Include="Views\Queue\Delete.cshtml" />
+    <Content Include="Views\Queue\Details.cshtml" />
+    <Content Include="Views\Queue\Edit.cshtml" />
+    <Content Include="Views\Queue\Index.cshtml" />
+    <Content Include="Views\PatientHealthProfiles\Create.cshtml" />
+    <Content Include="Views\PatientHealthProfiles\Delete.cshtml" />
+    <Content Include="Views\PatientHealthProfiles\Details.cshtml" />
+    <Content Include="Views\PatientHealthProfiles\Edit.cshtml" />
+    <Content Include="Views\PatientHealthProfiles\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -410,6 +497,33 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201605121516133_InitialCreate.resx">
       <DependentUpon>201605121516133_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701261244002_someupdate.resx">
+      <DependentUpon>201701261244002_someupdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702100441111_ICD_added.resx">
+      <DependentUpon>201702100441111_ICD_added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702100525524_DiagnosisCodeRange.resx">
+      <DependentUpon>201702100525524_DiagnosisCodeRange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702100621093_modifyICD_10_CM_Category.resx">
+      <DependentUpon>201702100621093_modifyICD_10_CM_Category.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702100742537_modifyCategoryToString.resx">
+      <DependentUpon>201702100742537_modifyCategoryToString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702140305501_QueueTableAdded.resx">
+      <DependentUpon>201702140305501_QueueTableAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702140318577_QueueNoAdded.resx">
+      <DependentUpon>201702140318577_QueueNoAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702140556584_DateToDateTimeQueueTable.resx">
+      <DependentUpon>201702140556584_DateToDateTimeQueueTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702140731420_AddedPatientHealthProfile.resx">
+      <DependentUpon>201702140731420_AddedPatientHealthProfile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\HouseholdProfile.rdlc" />
   </ItemGroup>

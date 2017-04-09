@@ -3,6 +3,8 @@ using cho500.Entity;
 using cho500.Models;
 using cho500.Models.ChildRecords;
 using cho500.Models.Households;
+using cho500.Models.Patient;
+using cho500.Models.Queue;
 
 namespace cho500.App_Start
 {
@@ -42,6 +44,10 @@ namespace cho500.App_Start
                     .ForMember(dest => dest.BloodType,
                                 opt => opt.MapFrom(src => src.BloodType.Type));
 
+                config.CreateMap<Person, DetailsPatientViewModel>()
+                    .ForMember(dest => dest.ID,
+                                opt => opt.MapFrom(src => src.PersonID));
+
                 config.CreateMap<CreatePersonViewModel, Person>();
 
                 config.CreateMap<Person, EditPersonViewModel >();
@@ -54,6 +60,12 @@ namespace cho500.App_Start
                                 opt => opt.MapFrom(src=>src.Barangay.Name))
                     .ForMember(dest=>dest.Respondent,
                                 opt => opt.MapFrom(src=>src.Respondent.FullName));
+
+                config.CreateMap<Queue, QueueListViewModel>()
+                    .ForMember(dest => dest.FullName,
+                                opt => opt.MapFrom(src => src.FirstName + " " + " " + src.MiddleName + " " + src.FamilyName));
+
+                //config.CreateMap<Consultation, PatientConsultationSummary>();
             });
         }
 

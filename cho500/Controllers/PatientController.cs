@@ -11,6 +11,7 @@ using cho500.Models;
 using PagedList;
 using System.Data.Entity.Infrastructure;
 using AutoMapper;
+using cho500.Models.Patient;
 
 namespace cho500.Controllers
 {
@@ -23,7 +24,7 @@ namespace cho500.Controllers
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             if (searchString != null)
             {
-                page = 1; 
+                page = 1;
             }
             else
             {
@@ -39,7 +40,6 @@ namespace cho500.Controllers
             if (!string.IsNullOrEmpty(searchString))
             {
                 patients = patients.Where(p => p.FullName.ToUpper().Contains(searchString.ToUpper())).ToList();
-
             }
 
             switch (sortOrder)
@@ -69,7 +69,30 @@ namespace cho500.Controllers
             {
                 return HttpNotFound();
             }
-            return View(person);
+            DetailsPatientViewModel model = new DetailsPatientViewModel();
+            model = Mapper.Map<Person, DetailsPatientViewModel>(person);
+            model.Father = (person.FatherPersonId > 0 ) ? db.Patient.Find(person.FatherPersonId).FullName.ToString() : "";
+            model.Mother = (person.MotherPersonId > 0 ) ? db.Patient.Find(person.MotherPersonId).FullName.ToString() : "";
+            model.BloodType = (person.BloodTypeID > 0 ) ? db.BloodType.Find(person.BloodTypeID).Type.ToString() : "";
+            ICollection<Consultation> consultationLists = await db.Consultations.Where(i => i.PersonID == person.PersonID).ToListAsync();
+            List<PatientConsultationSummary> patientConsultationSummaryList = new List<PatientConsultationSummary>();
+            foreach (var item in consultationLists)
+            {
+                patientConsultationSummaryList.Add(new PatientConsultationSummary
+                {
+                    ConsultationID = item.ConsultationID,
+                    ChiefComplaint = item.ChiefComplaint,
+                    AdmittedBy = item.AdmittedBy,
+                    DateOfConsult = item.DateOfConsult,
+                    PreviousConsultDate = (DateTime)item.PreviousConsultDate,
+                    PreviousConsult = item.PreviousConsult,
+                    Age = item.Age,
+                    PhysiciansName = item.Physician.Name
+                });
+                
+            }
+            model.ConsultationSummaryList = patientConsultationSummaryList;
+            return View(model);
         }
 
         // GET: Patient/Create
@@ -82,11 +105,11 @@ namespace cho500.Controllers
         }
 
         // POST: Patient/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "FirstName,MiddleName,LastName,DateOfBirth,Sex,CivilStatus,BloodTypeID,PhilHealthNo,ContactNumber,Encoder,Notes")] CreatePersonViewModel createPersonViewModel)
+        public ActionResult Create([Bind(Include = "PersonID,FirstName,MiddleName,LastName,ExtensionName,NameTittle,Religion,DateOfBirth,Sex,CivilStatus,WorkSkills,FatherPersonId,MotherPersonId,HouseholdProfileID,PhilHealthNo,ContactNumber,LandlineNumber,EmergencyContactName,EmergencyContactNumberCP,EmergencyContactNumberLL,Relation,EmergencyContactBirthday,Encoder,Notes,BloodTypeID")] CreatePersonViewModel createPersonViewModel)
         {
             try
             {
@@ -129,7 +152,7 @@ namespace cho500.Controllers
         }
 
         // POST: Patient/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -31,8 +31,8 @@
         <th>Civil Status</th>
         <th>Contact No.</th>
         <th>PhilHealth No.</th>
-        <th>Household Profile ID</th>
-
+        <th>Household ID</th>
+        <th></th>
     </tr>
 
     @foreach (var item in Model)
@@ -45,15 +45,11 @@
             <td>@Html.DisplayFor(modelItem => item.CivilStatus)</td>
             <td>@Html.DisplayFor(modelItem => item.ContactNumber)</td>
             <td>@Html.DisplayFor(modelItem => item.PhilHealthNo)</td>
-            @*<td>@Html.DisplayFor(modelItem => item.HouseholdProfileID)</td>*@
-            @*@if (item.HouseholdProfileID!= null)
-            {*@
-                <td>@Html.ActionLink(item.HouseholdProfileID, "Details", "HouseholdProfiles", new { householdProfileID = item.HouseholdProfileID }, null)</td>
-            @*}
-            else
-            {
-                <td></td>
-            }*@
+            @if (item.HouseholdProfileID=="None Member" ) {<td></td>}
+                      else {<td>@Html.ActionLink(item.HouseholdProfileID, "Details", "HouseholdProfiles", new { householdProfileID = item.HouseholdProfileID }, null)</td>}
+            <td>@Html.ActionLink("Delete", "Delete", new { id = item.ID })</td>
+            <td>@Html.ActionLink("Add Profile", "Create","PatientHealthProfiles", new { id = item.ID },null)</td>
+
         </tr>
     }
 
@@ -66,4 +62,4 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
             page,
             sortOrder = ViewBag.CurrentSort,
             currentFilter = ViewBag.CurrentFilter
-        })) 
+        }))
